@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f9fa">
+  <title>AI Playbook — 我的 AI 使用手册</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #2d3436;
+      --text-secondary: #636e72;
+      --accent: #0984e3;
+      --accent-soft: #d6eaf8;
+      --code-bg: #1e272e;
+      --code-text: #d2dae2;
+      --code-accent: #0be881;
+      --border: #dfe6e9;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
+      --table-stripe: #f5f6fa;
+      --table-hover: #eef1f5;
+      --badge-bg: #0984e3;
+      --badge-text: #fff;
+      --blockquote-bg: #f0f4f8;
+      --blockquote-border: #0984e3;
+      --progress-bg: #dfe6e9;
+      --toc-bg: #ffffff;
+      --toc-active: #0984e3;
+      --divider: #dfe6e9;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1d23;
+      --card-bg: #252830;
+      --text: #e4e6eb;
+      --text-secondary: #9ba1a8;
+      --accent: #63b3ed;
+      --accent-soft: #1a365d;
+      --code-bg: #0d1117;
+      --code-text: #c9d1d9;
+      --code-accent: #68d391;
+      --border: #383d44;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+      --table-stripe: #2a2d33;
+      --table-hover: #32363d;
+      --badge-bg: #63b3ed;
+      --badge-text: #1a202c;
+      --blockquote-bg: #1e2630;
+      --blockquote-border: #63b3ed;
+      --progress-bg: #383d44;
+      --toc-bg: #252830;
+      --toc-active: #63b3ed;
+      --divider: #383d44;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1a1d23;
+        --card-bg: #252830;
+        --text: #e4e6eb;
+        --text-secondary: #9ba1a8;
+        --accent: #63b3ed;
+        --accent-soft: #1a365d;
+        --code-bg: #0d1117;
+        --code-text: #c9d1d9;
+        --code-accent: #68d391;
+        --border: #383d44;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+        --table-stripe: #2a2d33;
+        --table-hover: #32363d;
+        --badge-bg: #63b3ed;
+        --badge-text: #1a202c;
+        --blockquote-bg: #1e2630;
+        --blockquote-border: #63b3ed;
+        --progress-bg: #383d44;
+        --toc-bg: #252830;
+        --toc-active: #63b3ed;
+        --divider: #383d44;
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 28px;
+    }
+
+    body {
+      font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 16px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* Reading Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      z-index: 1000;
+      background: linear-gradient(90deg, var(--accent), var(--code-accent));
+      transition: width 0.1s linear;
+    }
+
+    /* Container */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px 18px 100px;
+      }
+
+      body {
+        font-size: 16px;
+        line-height: 1.75;
+      }
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 40px 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .hero-card h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-card .tagline {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* Language Switch */
+    .lang-switch {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .lang-switch:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .section-card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-card h2 .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .section-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 20px 0 10px;
+      scroll-margin-top: 24px;
+    }
+
+    .section-card p {
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+    }
+
+    .section-card a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .section-card a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* Code Block Card */
+    .code-card {
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 0;
+      margin: 16px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-card .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .code-card .code-lang {
+      font-size: 0.75rem;
+      color: var(--code-accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .code-card .copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--code-text);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      min-width: 44px;
+      min-height: 30px;
+    }
+
+    .code-card .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .code-card .copy-btn.copied {
+      color: var(--code-accent);
+      border-color: var(--code-accent);
+    }
+
+    .code-card pre {
+      margin: 0;
+      padding: 20px 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .code-card code {
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--code-text);
+      line-height: 1.6;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 16px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 12px 16px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    tr:nth-child(even) td {
+      background: var(--table-stripe);
+    }
+
+    tr:hover td {
+      background: var(--table-hover);
+    }
+
+    /* Lists */
+    ul,
+    ol {
+      margin: 12px 0 12px 20px;
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      padding-left: 18px;
+      position: relative;
+    }
+
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    ol {
+      counter-reset: item;
+    }
+
+    ol li {
+      padding-left: 28px;
+    }
+
+    ol li::before {
+      counter-increment: item;
+      content: counter(item);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* Blockquote */
+    blockquote {
+      background: var(--blockquote-bg);
+      border-left: 4px solid var(--blockquote-border);
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* Strong emphasis */
+    strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* Horizontal rule */
+    hr {
+      border: none;
+      border-top: 1px solid var(--divider);
+      margin: 24px 0;
+    }
+
+    /* Inline code */
+    :not(pre)>code {
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    /* Page Layout (Desktop: container + sidebar side by side) */
+    @media (min-width: 1100px) {
+      .page-layout {
+        max-width: 1012px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .page-layout .container {
+        flex: 1;
+        min-width: 0;
+        max-width: 760px;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    /* TOC Sidebar (Desktop) */
+    @media (min-width: 1100px) {
+      .toc-sidebar {
+        display: block;
+        position: sticky;
+        top: 40px;
+        width: 220px;
+        flex-shrink: 0;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        background: var(--toc-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 16px;
+        box-shadow: var(--shadow);
+        z-index: 100;
+        scrollbar-width: thin;
+      }
+
+      .toc-sidebar h4 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      .toc-sidebar a {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border-left: 2px solid transparent;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+      }
+
+      .toc-sidebar a:hover {
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .toc-sidebar a.toc-h3 {
+        padding-left: 22px;
+        font-size: 0.78rem;
+      }
+
+      .toc-sidebar a.active {
+        color: var(--toc-active);
+        border-left-color: var(--toc-active);
+        background: var(--accent-soft);
+        font-weight: 600;
+      }
+    }
+
+    @media (max-width: 1099px) {
+      .toc-sidebar {
+        display: none;
+      }
+    }
+
+    /* TOC Mobile Drawer Button — flows inside .float-controls flex column */
+    .toc-drawer-btn {
+      display: none;
+    }
+
+    @media (max-width: 1099px) {
+      .toc-drawer-btn {
+        display: flex;
+      }
+    }
+
+    /* Floating Controls */
+    .float-controls {
+      position: fixed;
+      right: 20px;
+      bottom: 80px;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .float-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .float-btn:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .float-btn:active {
+      transform: scale(0.95);
+    }
+
+    .float-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .theme-toggle {
+      font-size: 1rem;
+    }
+
+    /* TOC Drawer */
+    .toc-drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 900;
+    }
+
+    .toc-drawer-overlay.open {
+      display: block;
+    }
+
+    .toc-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 65vh;
+      background: var(--card-bg);
+      border-radius: 20px 20px 0 0;
+      z-index: 901;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 16px 0 env(safe-area-inset-bottom, 20px);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .toc-drawer.open {
+      transform: translateY(0);
+    }
+
+    .toc-drawer-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 12px;
+    }
+
+    .toc-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc-drawer-header h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .toc-drawer-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .toc-drawer-content {
+      padding: 8px 0;
+      max-height: calc(65vh - 70px);
+      overflow-y: auto;
+    }
+
+    .toc-drawer-content a {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 12px 24px;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .toc-drawer-content a.toc-h3 {
+      padding-left: 40px;
+      font-size: 0.85rem;
+    }
+
+    .toc-drawer-content a.active {
+      color: var(--toc-active);
+      border-left-color: var(--toc-active);
+      background: var(--accent-soft);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      padding: 40px 0 20px;
+    }
+
+    /* Responsive image */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (hover: none) {
+      .float-btn:hover {
+        background: var(--card-bg);
+        color: var(--text);
+      }
+
+      tr:hover td {
+        background: var(--table-stripe);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-bar" id="progress-bar"></div>
+
+  <!-- TOC Drawer Overlay -->
+  <div class="toc-drawer-overlay" id="toc-overlay"></div>
+
+  <!-- TOC Drawer -->
+  <div class="toc-drawer" id="toc-drawer">
+    <div class="toc-drawer-handle"></div>
+    <div class="toc-drawer-header">
+      <h4>目录</h4>
+      <button class="toc-drawer-close" id="toc-drawer-close" aria-label="关闭目录">×</button>
+    </div>
+    <div class="toc-drawer-content" id="toc-drawer-content"></div>
+  </div>
+
+  <!-- Floating Controls -->
+  <div class="float-controls">
+    <button class="float-btn theme-toggle" id="theme-toggle" aria-label="切换主题" title="切换主题">🌓</button>
+    <button class="float-btn toc-drawer-btn" id="toc-drawer-btn" aria-label="目录" title="目录">☰</button>
+    <button class="float-btn hidden" id="back-to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+  </div>
+
+  <div class="page-layout">
+
+    <div class="container">
+
+      <!-- Hero -->
+      <div class="hero-card" id="hero">
+        <a class="lang-switch" href="index_en.html" title="Switch to English">English</a>
+        <h1>AI Playbook</h1>
+        <p class="tagline">我的 AI 使用手册</p>
+        <p style="margin-top:8px; color: var(--text-secondary); font-size: 0.9rem;">一个记录和沉淀我日常使用 AI 的 Playbook 仓库。</p>
+      </div>
+
+      <!-- 关于本仓库 -->
+      <div class="section-card" id="section-about">
+        <h2><span class="step-num">1</span>关于本仓库</h2>
+        <p>这里是我与 AI 协作的全部可复用资产——技能、工具、脚本、规则、角色、提示词、命令，以及围绕 AI 使用写下的思考和文章（存放在 <code>articles/</code> 目录）。</p>
+        <p>所有内容按功能分类存放，方便检索、复用和持续迭代。部分文章会转化为 HTML 并通过 <strong>GitHub Pages</strong> 对外发布。</p>
+      </div>
+
+      <!-- 目录结构 -->
+      <div class="section-card" id="section-structure">
+        <h2><span class="step-num">2</span>目录结构</h2>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-lang">tree</span>
+            <button class="copy-btn" data-code="ai-playbook/
+├── articles/         # 关于 AI 使用的感想、思考、感悟
+├── commands/         # 常用 AI 命令（快捷指令集合）
+├── docs/             # 文章 &amp; GitHub Pages 发布内容
+├── prompts/          # 提示词模板（可复用的 prompt）
+├── roles/            # AI 角色设定（人设和系统 prompt）
+├── rules/            # 规则文件（约束和规范 AI 行为）
+├── scripts/          # 脚本（自动化、批处理等）
+├── skills/           # 技能（特定场景下的完整工作流）
+├── tools/            # 工具（AI 辅助工具链）
+└── README.md         # 本文件">复制</button>
+          </div>
+          <pre><code>ai-playbook/
+├── articles/         # 关于 AI 使用的感想、思考、感悟
+├── commands/         # 常用 AI 命令（快捷指令集合）
+├── docs/             # 文章 &amp; GitHub Pages 发布内容
+├── prompts/          # 提示词模板（可复用的 prompt）
+├── roles/            # AI 角色设定（人设和系统 prompt）
+├── rules/            # 规则文件（约束和规范 AI 行为）
+├── scripts/          # 脚本（自动化、批处理等）
+├── skills/           # 技能（特定场景下的完整工作流）
+├── tools/            # 工具（AI 辅助工具链）
+└── README.md         # 本文件</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>目录</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>articles/</code></td>
+                <td>关于 AI 使用和本仓库的感想、思考、感悟，可手动撰写或 AI 辅助记录</td>
+              </tr>
+              <tr>
+                <td><code>commands/</code></td>
+                <td>沉淀常用的 AI 指令，如"帮我润色这段文字"、"生成单元测试"等，即拿即用</td>
+              </tr>
+              <tr>
+                <td><code>docs/</code></td>
+                <td>AI 使用心得、技术文章，以及转换为 HTML 的网页内容，通过 GitHub Pages 发布</td>
+              </tr>
+              <tr>
+                <td><code>prompts/</code></td>
+                <td>经过验证的高质量提示词模板，可直接复用或二次定制</td>
+              </tr>
+              <tr>
+                <td><code>roles/</code></td>
+                <td>AI 角色定义，为不同场景预设系统级人设和对话规则</td>
+              </tr>
+              <tr>
+                <td><code>rules/</code></td>
+                <td>AI 行为约束规则，确保输出质量、风格、范围符合预期</td>
+              </tr>
+              <tr>
+                <td><code>scripts/</code></td>
+                <td>自动化脚本，将 AI 集成到日常工作流中</td>
+              </tr>
+              <tr>
+                <td><code>skills/</code></td>
+                <td>面向特定任务的完整技能包，包含 prompt + 规则 + 工作流</td>
+              </tr>
+              <tr>
+                <td><code>tools/</code></td>
+                <td>与 AI 搭配使用的工具清单、配置和使用指南</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 使用方式 -->
+      <div class="section-card" id="section-usage">
+        <h2><span class="step-num">3</span>使用方式</h2>
+        <ol>
+          <li><strong>浏览</strong>：按目录分类找到需要的技能、提示词或规则</li>
+          <li><strong>复用</strong>：直接复制 prompt 或规则到你的 AI 对话中</li>
+          <li><strong>参考</strong>：阅读 <code>docs/</code> 中的文章了解使用思路</li>
+          <li><strong>共建</strong>：欢迎提 Issue 或 PR 分享你的 AI 使用技巧</li>
+        </ol>
+      </div>
+
+      <!-- GitHub Pages -->
+      <div class="section-card" id="section-pages">
+        <h2><span class="step-num">4</span>GitHub Pages</h2>
+        <p>本仓库的 <code>docs/</code> 目录已配置 GitHub Pages，你可以直接访问：</p>
+        <blockquote>
+          <a href="https://GitHubJiKe.github.io/ai-playbook" target="_blank"
+            rel="noopener">https://GitHubJiKe.github.io/ai-playbook</a>
+        </blockquote>
+      </div>
+
+      <!-- 许可 -->
+      <div class="section-card" id="section-license">
+        <h2><span class="step-num">5</span>许可</h2>
+        <p>MIT License © 2026</p>
+      </div>
+
+    </div>
+
+    <!-- Desktop TOC Sidebar (inside page-layout for side-by-side layout) -->
+    <nav class="toc-sidebar" id="toc-sidebar">
+      <h4>目录</h4>
+      <div id="toc-content"></div>
+    </nav>
+
+  </div>
+
+  <script>
+    (function () {
+      // ===== Theme =====
+      const STORAGE_KEY = 'ai-playbook-theme';
+      const themeToggle = document.getElementById('theme-toggle');
+      const root = document.documentElement;
+
+      function getSavedTheme() {
+        try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
+      }
+      function saveTheme(t) {
+        try { localStorage.setItem(STORAGE_KEY, t); } catch (e) { }
+      }
+
+      function applyTheme(t) {
+        root.removeAttribute('data-theme');
+        if (t === 'dark') root.setAttribute('data-theme', 'dark');
+        else if (t === 'light') root.setAttribute('data-theme', 'light');
+      }
+
+      let currentTheme = getSavedTheme(); // 'dark', 'light', or null (system)
+      applyTheme(currentTheme);
+
+      themeToggle.addEventListener('click', () => {
+        if (!currentTheme || currentTheme === 'system') {
+          // Currently following system, switch to opposite of system preference
+          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          currentTheme = systemDark ? 'light' : 'dark';
+        } else {
+          currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        }
+        applyTheme(currentTheme);
+        saveTheme(currentTheme);
+      });
+
+      // ===== Progress Bar =====
+      const progressBar = document.getElementById('progress-bar');
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+        progressBar.style.width = progress + '%';
+      }, { passive: true });
+
+      // ===== Back to Top =====
+      const backToTop = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+          backToTop.classList.remove('hidden');
+        } else {
+          backToTop.classList.add('hidden');
+        }
+      }, { passive: true });
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // ===== Copy Buttons =====
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const code = btn.getAttribute('data-code');
+          try {
+            await navigator.clipboard.writeText(code);
+            btn.textContent = '已复制';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = '复制';
+              btn.classList.remove('copied');
+            }, 2000);
+          } catch (e) {
+            // fallback
+            const ta = document.createElement('textarea');
+            ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta);
+            btn.textContent = '已复制';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+          }
+        });
+      });
+
+      // ===== TOC =====
+      const headings = Array.from(document.querySelectorAll('.section-card h2, .section-card h2 + *, .section-card h3'));
+      // Actually, we want h2 and h3 within section cards
+      const tocHeadings = document.querySelectorAll('.section-card h2[id], .section-card h3[id], .section-card h2, .section-card h3');
+
+      // Give IDs to h2/h3 that don't have them, and collect for TOC
+      const tocItems = [];
+      document.querySelectorAll('.section-card h2, .section-card h3').forEach((el, i) => {
+        if (!el.id) {
+          const text = el.textContent.replace(/^\d\s*/, '').trim().replace(/\s+/g, '-').toLowerCase();
+          el.id = 'heading-' + i + (text ? '-' + text.substring(0, 20) : '');
+        }
+        const tag = el.tagName.toLowerCase();
+        // Clean text: remove step-num content
+        const clone = el.cloneNode(true);
+        const stepNum = clone.querySelector('.step-num');
+        if (stepNum) stepNum.remove();
+        const title = clone.textContent.trim();
+        tocItems.push({ id: el.id, title: title, tag: tag });
+        el.id = el.id; // ensure
+      });
+
+      // Build TOC links
+      const tocContent = document.getElementById('toc-content');
+      const tocDrawerContent = document.getElementById('toc-drawer-content');
+
+      function buildTocLinks(container) {
+        container.innerHTML = '';
+        tocItems.forEach(item => {
+          const a = document.createElement('a');
+          a.href = '#' + item.id;
+          a.textContent = item.title;
+          if (item.tag === 'h3') a.classList.add('toc-h3');
+          a.setAttribute('data-toc-id', item.id);
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById(item.id);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Close mobile drawer
+            closeTocDrawer();
+          });
+          container.appendChild(a);
+        });
+      }
+
+      // Hide sidebar if less than 3 items
+      if (tocItems.length < 3) {
+        document.getElementById('toc-sidebar').style.display = 'none';
+      } else {
+        buildTocLinks(tocContent);
+        buildTocLinks(tocDrawerContent);
+      }
+
+      // Intersection Observer for active TOC highlighting
+      const tocLinks = () => document.querySelectorAll('[data-toc-id]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks().forEach(link => {
+              link.classList.toggle('active', link.getAttribute('data-toc-id') === id);
+            });
+          }
+        });
+      }, { rootMargin: '-80px 0px -70% 0px' });
+
+      tocItems.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) observer.observe(el);
+      });
+
+      // ===== Mobile TOC Drawer =====
+      const tocDrawer = document.getElementById('toc-drawer');
+      const tocOverlay = document.getElementById('toc-overlay');
+      const tocDrawerBtn = document.getElementById('toc-drawer-btn');
+      const tocDrawerCloseBtn = document.getElementById('toc-drawer-close');
+
+      function openTocDrawer() {
+        tocOverlay.classList.add('open');
+        tocDrawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeTocDrawer() {
+        tocOverlay.classList.remove('open');
+        tocDrawer.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      tocDrawerBtn.addEventListener('click', openTocDrawer);
+      tocDrawerCloseBtn.addEventListener('click', closeTocDrawer);
+      tocOverlay.addEventListener('click', closeTocDrawer);
+
+      // ===== Responsive image =====
+      document.querySelectorAll('img').forEach(img => {
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+      });
+    })();
+  </script>
+</body>
+
+</html>
