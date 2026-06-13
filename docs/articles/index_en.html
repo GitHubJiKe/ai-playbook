@@ -4,83 +4,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#f8f9fa">
+  <meta name="theme-color" content="#0a0e1a">
   <title>AI Playbook — My AI Usage Handbook</title>
   <style>
     :root {
-      --bg: #f8f9fa;
+      --bg: #0a0e1a;
+      --card-bg: #131827;
+      --text: #dce1e8;
+      --text-secondary: #8892a8;
+      --accent: #63b3ed;
+      --accent-glow: rgba(99, 179, 237, 0.15);
+      --accent-soft: #1a2940;
+      --code-bg: #090d15;
+      --code-text: #bcc5d4;
+      --code-accent: #68d391;
+      --border: #1e2a3a;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.6);
+      --table-stripe: #151b28;
+      --table-hover: #1a2333;
+      --badge-bg: #63b3ed;
+      --badge-text: #0a0e1a;
+      --blockquote-bg: #111827;
+      --blockquote-border: #63b3ed;
+      --progress-bg: #1e2a3a;
+      --toc-bg: #131827;
+      --toc-active: #63b3ed;
+      --divider: #1e2a3a;
+      --nav-bg: rgba(10, 14, 26, 0.85);
+    }
+
+    [data-theme="light"] {
+      --bg: #f4f6f9;
       --card-bg: #ffffff;
-      --text: #2d3436;
-      --text-secondary: #636e72;
-      --accent: #0984e3;
-      --accent-soft: #d6eaf8;
-      --code-bg: #1e272e;
-      --code-text: #d2dae2;
-      --code-accent: #0be881;
-      --border: #dfe6e9;
+      --text: #1a1f2e;
+      --text-secondary: #5a6377;
+      --accent: #2563eb;
+      --accent-glow: rgba(37, 99, 235, 0.08);
+      --accent-soft: #dbeafe;
+      --code-bg: #1a1f2e;
+      --code-text: #e2e8f0;
+      --code-accent: #34d399;
+      --border: #dce1e8;
       --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
-      --table-stripe: #f5f6fa;
-      --table-hover: #eef1f5;
-      --badge-bg: #0984e3;
+      --table-stripe: #f8fafc;
+      --table-hover: #f0f4f8;
+      --badge-bg: #2563eb;
       --badge-text: #fff;
-      --blockquote-bg: #f0f4f8;
-      --blockquote-border: #0984e3;
-      --progress-bg: #dfe6e9;
+      --blockquote-bg: #eff6ff;
+      --blockquote-border: #2563eb;
+      --progress-bg: #dce1e8;
       --toc-bg: #ffffff;
-      --toc-active: #0984e3;
-      --divider: #dfe6e9;
+      --toc-active: #2563eb;
+      --divider: #dce1e8;
+      --nav-bg: rgba(244, 246, 249, 0.85);
     }
 
-    [data-theme="dark"] {
-      --bg: #1a1d23;
-      --card-bg: #252830;
-      --text: #e4e6eb;
-      --text-secondary: #9ba1a8;
-      --accent: #63b3ed;
-      --accent-soft: #1a365d;
-      --code-bg: #0d1117;
-      --code-text: #c9d1d9;
-      --code-accent: #68d391;
-      --border: #383d44;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
-      --table-stripe: #2a2d33;
-      --table-hover: #32363d;
-      --badge-bg: #63b3ed;
-      --badge-text: #1a202c;
-      --blockquote-bg: #1e2630;
-      --blockquote-border: #63b3ed;
-      --progress-bg: #383d44;
-      --toc-bg: #252830;
-      --toc-active: #63b3ed;
-      --divider: #383d44;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #1a1d23;
-        --card-bg: #252830;
-        --text: #e4e6eb;
-        --text-secondary: #9ba1a8;
-        --accent: #63b3ed;
-        --accent-soft: #1a365d;
-        --code-bg: #0d1117;
-        --code-text: #c9d1d9;
-        --code-accent: #68d391;
-        --border: #383d44;
-        --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
-        --table-stripe: #2a2d33;
-        --table-hover: #32363d;
-        --badge-bg: #63b3ed;
-        --badge-text: #1a202c;
-        --blockquote-bg: #1e2630;
-        --blockquote-border: #63b3ed;
-        --progress-bg: #383d44;
-        --toc-bg: #252830;
-        --toc-active: #63b3ed;
-        --divider: #383d44;
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #f4f6f9;
+        --card-bg: #ffffff;
+        --text: #1a1f2e;
+        --text-secondary: #5a6377;
+        --accent: #2563eb;
+        --accent-glow: rgba(37, 99, 235, 0.08);
+        --accent-soft: #dbeafe;
+        --code-bg: #1a1f2e;
+        --code-text: #e2e8f0;
+        --code-accent: #34d399;
+        --border: #dce1e8;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --table-stripe: #f8fafc;
+        --table-hover: #f0f4f8;
+        --badge-bg: #2563eb;
+        --badge-text: #fff;
+        --blockquote-bg: #eff6ff;
+        --blockquote-border: #2563eb;
+        --progress-bg: #dce1e8;
+        --toc-bg: #ffffff;
+        --toc-active: #2563eb;
+        --divider: #dce1e8;
+        --nav-bg: rgba(244, 246, 249, 0.85);
       }
     }
 
@@ -107,7 +113,7 @@
       touch-action: manipulation;
     }
 
-    /* Reading Progress Bar */
+    /* Progress Bar */
     .progress-bar {
       position: fixed;
       top: 0;
@@ -118,55 +124,55 @@
       transition: width 0.1s linear;
     }
 
-    /* Container */
-    .container {
+    /* Top Nav */
+    .top-nav {
+      position: sticky;
+      top: 3px;
+      z-index: 900;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .top-nav-inner {
       max-width: 760px;
       margin: 0 auto;
-      padding: 40px 24px 80px;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     @media (max-width: 640px) {
-      .container {
-        padding: 24px 18px 100px;
-      }
-
-      body {
-        font-size: 16px;
-        line-height: 1.75;
+      .top-nav-inner {
+        padding: 8px 18px;
       }
     }
 
-    /* Hero Card */
-    .hero-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 40px 36px;
-      margin-bottom: 32px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .hero-card h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-
-    .hero-card .tagline {
-      font-size: 1.05rem;
+    .nav-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
       color: var(--text-secondary);
-      font-style: italic;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
-    /* Language Switch */
-    .lang-switch {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      font-size: 0.8rem;
+    .nav-home:hover {
+      color: var(--accent);
+    }
+
+    .nav-home .arrow {
+      font-size: 0.9rem;
+    }
+
+    .nav-lang {
+      font-size: 0.78rem;
       color: var(--text-secondary);
       text-decoration: none;
       padding: 4px 12px;
@@ -174,109 +180,177 @@
       border-radius: 6px;
       transition: all 0.2s;
       font-weight: 500;
+      white-space: nowrap;
     }
 
-    .lang-switch:hover {
+    .nav-lang:hover {
       color: var(--accent);
       border-color: var(--accent);
-      background: var(--accent-soft);
+      background: var(--accent-glow);
     }
 
-    /* Section Cards */
-    .section-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+    /* Container */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px 18px 100px;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 48px 24px 32px;
+      margin-bottom: 32px;
       position: relative;
     }
 
-    .section-card h2 {
-      font-size: 1.25rem;
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+    }
+
+    .hero .tagline {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 32px 12px 24px;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* Section */
+    .section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      scroll-margin-top: 60px;
+    }
+
+    @media (max-width: 640px) {
+      .section {
+        padding: 22px 18px;
+      }
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 16px;
       padding-bottom: 10px;
-      border-bottom: 2px solid var(--accent-soft);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
+      scroll-margin-top: 80px;
     }
 
-    .section-card h2 .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: var(--badge-bg);
-      color: var(--badge-text);
-      font-size: 0.8rem;
-      font-weight: 700;
+    .section h2 .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
       flex-shrink: 0;
     }
 
-    .section-card h3 {
+    .section h3 {
       font-size: 1.05rem;
       font-weight: 600;
       color: var(--text);
       margin: 20px 0 10px;
-      scroll-margin-top: 24px;
+      scroll-margin-top: 80px;
     }
 
-    .section-card p {
+    .section p {
       margin-bottom: 12px;
       color: var(--text-secondary);
+      line-height: 1.8;
     }
 
-    .section-card a {
+    .section a {
       color: var(--accent);
       text-decoration: none;
       border-bottom: 1px solid transparent;
       transition: border-color 0.2s;
     }
 
-    .section-card a:hover {
+    .section a:hover {
       border-bottom-color: var(--accent);
     }
 
-    /* Code Block Card */
+    /* Code Block */
     .code-card {
       background: var(--code-bg);
       border-radius: 10px;
-      padding: 0;
       margin: 16px 0;
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
     .code-card .code-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .code-card .code-lang {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--code-accent);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
     }
 
     .code-card .copy-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--code-text);
       padding: 4px 12px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       cursor: pointer;
       font-family: inherit;
       transition: all 0.2s;
@@ -285,26 +359,27 @@
     }
 
     .code-card .copy-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .code-card .copy-btn.copied {
       color: var(--code-accent);
       border-color: var(--code-accent);
+      background: rgba(104, 211, 145, 0.1);
     }
 
     .code-card pre {
       margin: 0;
-      padding: 20px 16px;
+      padding: 18px 16px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
 
     .code-card code {
       font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--code-text);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* Table */
@@ -319,7 +394,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     th {
@@ -329,6 +404,9 @@
       padding: 12px 16px;
       text-align: left;
       white-space: nowrap;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     td {
@@ -355,7 +433,7 @@
     li {
       margin-bottom: 8px;
       color: var(--text-secondary);
-      padding-left: 18px;
+      padding-left: 22px;
       position: relative;
     }
 
@@ -364,8 +442,8 @@
       position: absolute;
       left: 0;
       top: 11px;
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: var(--accent);
     }
@@ -375,7 +453,7 @@
     }
 
     ol li {
-      padding-left: 28px;
+      padding-left: 32px;
     }
 
     ol li::before {
@@ -383,42 +461,35 @@
       content: counter(item);
       position: absolute;
       left: 0;
-      top: 1px;
+      top: 2px;
       width: 20px;
       height: 20px;
-      border-radius: 6px;
+      border-radius: 4px;
       background: var(--accent-soft);
       color: var(--accent);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       line-height: 1;
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
     }
 
     /* Blockquote */
     blockquote {
       background: var(--blockquote-bg);
-      border-left: 4px solid var(--blockquote-border);
+      border-left: 3px solid var(--blockquote-border);
       padding: 16px 20px;
       margin: 16px 0;
       border-radius: 0 8px 8px 0;
       color: var(--text-secondary);
-      font-style: italic;
     }
 
-    /* Strong emphasis */
-    strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    /* Horizontal rule */
-    hr {
-      border: none;
-      border-top: 1px solid var(--divider);
-      margin: 24px 0;
+    blockquote a {
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
     }
 
     /* Inline code */
@@ -432,10 +503,21 @@
       font-weight: 500;
     }
 
-    /* Page Layout (Desktop: container + sidebar side by side) */
+    strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--divider);
+      margin: 24px 0;
+    }
+
+    /* Desktop layout */
     @media (min-width: 1100px) {
       .page-layout {
-        max-width: 1012px;
+        max-width: 1032px;
         margin: 0 auto;
         padding: 0 24px;
         display: flex;
@@ -453,15 +535,15 @@
       }
     }
 
-    /* TOC Sidebar (Desktop) */
+    /* TOC Sidebar */
     @media (min-width: 1100px) {
       .toc-sidebar {
         display: block;
         position: sticky;
-        top: 40px;
-        width: 220px;
+        top: 60px;
+        width: 216px;
         flex-shrink: 0;
-        max-height: calc(100vh - 80px);
+        max-height: calc(100vh - 100px);
         overflow-y: auto;
         background: var(--toc-bg);
         border: 1px solid var(--border);
@@ -470,20 +552,22 @@
         box-shadow: var(--shadow);
         z-index: 100;
         scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
       }
 
       .toc-sidebar h4 {
-        font-size: 0.8rem;
+        font-size: 0.72rem;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
+        letter-spacing: 1px;
         color: var(--text-secondary);
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         font-weight: 600;
+        font-family: "SF Mono", "Fira Code", Consolas, monospace;
       }
 
       .toc-sidebar a {
         display: block;
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         color: var(--text-secondary);
         text-decoration: none;
         padding: 6px 10px;
@@ -495,12 +579,12 @@
 
       .toc-sidebar a:hover {
         color: var(--accent);
-        background: var(--accent-soft);
+        background: var(--accent-glow);
       }
 
       .toc-sidebar a.toc-h3 {
         padding-left: 22px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
       }
 
       .toc-sidebar a.active {
@@ -517,7 +601,6 @@
       }
     }
 
-    /* TOC Mobile Drawer Button — flows inside .float-controls flex column */
     .toc-drawer-btn {
       display: none;
     }
@@ -532,7 +615,7 @@
     .float-controls {
       position: fixed;
       right: 20px;
-      bottom: 80px;
+      bottom: 60px;
       z-index: 500;
       display: flex;
       flex-direction: column;
@@ -550,7 +633,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       box-shadow: var(--shadow);
       transition: all 0.2s;
       -webkit-tap-highlight-color: transparent;
@@ -570,16 +653,12 @@
       pointer-events: none;
     }
 
-    .theme-toggle {
-      font-size: 1rem;
-    }
-
     /* TOC Drawer */
     .toc-drawer-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       z-index: 900;
@@ -601,7 +680,8 @@
       transform: translateY(100%);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       padding: 16px 0 env(safe-area-inset-bottom, 20px);
-      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
     }
 
     .toc-drawer.open {
@@ -672,15 +752,6 @@
       font-weight: 600;
     }
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      padding: 40px 0 20px;
-    }
-
-    /* Responsive image */
     img {
       max-width: 100%;
       height: auto;
@@ -693,6 +764,10 @@
       }
 
       tr:hover td {
+        background: transparent;
+      }
+
+      tr:nth-child(even):hover td {
         background: var(--table-stripe);
       }
     }
@@ -703,7 +778,15 @@
 
   <div class="progress-bar" id="progress-bar"></div>
 
-  <!-- TOC Drawer Overlay -->
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a class="nav-home" href="../index_en.html"><span class="arrow">←</span> AI Playbook Home</a>
+      <a class="nav-lang" href="index.html">中文</a>
+    </div>
+  </nav>
+
+  <!-- TOC Overlay -->
   <div class="toc-drawer-overlay" id="toc-overlay"></div>
 
   <!-- TOC Drawer -->
@@ -728,28 +811,21 @@
     <div class="container">
 
       <!-- Hero -->
-      <div class="hero-card" id="hero">
-        <a class="lang-switch" href="index.html" title="切换到中文">中文</a>
-        <h1>AI Playbook</h1>
-        <p class="tagline">My AI Usage Handbook</p>
-        <p style="margin-top:8px; color: var(--text-secondary); font-size: 0.9rem;">A personal playbook for documenting
-          and reusing how I work with AI.</p>
-      </div>
+      <section class="hero" id="hero">
+        <h1><span class="accent">AI Playbook</span> · My AI Usage Handbook</h1>
+        <p class="tagline">&gt; A personal playbook for documenting and reusing how I work with AI.</p>
+      </section>
 
       <!-- About -->
-      <div class="section-card" id="section-about">
-        <h2><span class="step-num">1</span>About</h2>
-        <p>This repository is a collection of all my reusable AI collaboration assets — skills, tools, scripts, rules,
-          roles, prompts, commands, along with thoughts and articles about using AI (stored in the
-          <code>articles/</code> directory).
-        </p>
-        <p>Everything is organized by function for easy search, reuse, and continuous iteration. Selected articles are
-          converted to HTML and published via <strong>GitHub Pages</strong>.</p>
-      </div>
+      <section class="section" id="section-about">
+        <h2><span class="dot"></span>About</h2>
+        <p>This repository is a collection of all my reusable AI collaboration assets — skills, tools, scripts, rules, roles, prompts, commands, along with thoughts and articles about using AI (stored in the <code>articles/</code> directory).</p>
+        <p>Everything is organized by function for easy search, reuse, and continuous iteration. Selected articles are converted to HTML and published via <strong>GitHub Pages</strong>.</p>
+      </section>
 
       <!-- Directory Structure -->
-      <div class="section-card" id="section-structure">
-        <h2><span class="step-num">2</span>Directory Structure</h2>
+      <section class="section" id="section-structure">
+        <h2><span class="dot"></span>Directory Structure</h2>
 
         <div class="code-card">
           <div class="code-header">
@@ -790,8 +866,7 @@
             <tbody>
               <tr>
                 <td><code>articles/</code></td>
-                <td>Thoughts, reflections, and insights about AI usage and this repo — manually written or AI-assisted
-                </td>
+                <td>Thoughts, reflections, and insights about AI usage and this repo — manually written or AI-assisted</td>
               </tr>
               <tr>
                 <td><code>commands/</code></td>
@@ -828,47 +903,37 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
 
       <!-- How to Use -->
-      <div class="section-card" id="section-usage">
-        <h2><span class="step-num">3</span>How to Use</h2>
+      <section class="section" id="section-usage">
+        <h2><span class="dot"></span>How to Use</h2>
         <ol>
           <li><strong>Browse</strong>: Navigate by category to find the skill, prompt, or rule you need</li>
           <li><strong>Reuse</strong>: Copy prompts or rules directly into your AI conversations</li>
           <li><strong>Learn</strong>: Read articles in <code>docs/</code> for workflows and best practices</li>
           <li><strong>Contribute</strong>: Issues and PRs are welcome — share your AI tips!</li>
         </ol>
-      </div>
+      </section>
 
       <!-- GitHub Pages -->
-      <div class="section-card" id="section-pages">
-        <h2><span class="step-num">4</span>GitHub Pages</h2>
+      <section class="section" id="section-pages">
+        <h2><span class="dot"></span>GitHub Pages</h2>
         <p>The <code>docs/</code> directory is configured for GitHub Pages. Visit:</p>
         <blockquote>
-          <a href="https://GitHubJiKe.github.io/ai-playbook" target="_blank"
-            rel="noopener">https://GitHubJiKe.github.io/ai-playbook</a>
+          <a href="https://GitHubJiKe.github.io/ai-playbook" target="_blank" rel="noopener">https://GitHubJiKe.github.io/ai-playbook</a>
         </blockquote>
-      </div>
-
-      <!-- Articles -->
-      <div class="section-card" id="section-articles">
-        <h2><span class="step-num">5</span>Articles</h2>
-        <p>📄 Read the detailed HTML version of the repository documentation, with light/dark theme toggle and table of contents navigation:</p>
-        <blockquote>
-          <a href="articles/index_en.html">📖 Read Articles → AI Playbook Handbook</a>
-        </blockquote>
-      </div>
+      </section>
 
       <!-- License -->
-      <div class="section-card" id="section-license">
-        <h2><span class="step-num">6</span>License</h2>
+      <section class="section" id="section-license">
+        <h2><span class="dot"></span>License</h2>
         <p>MIT License © 2025</p>
-      </div>
+      </section>
 
     </div>
 
-    <!-- Desktop TOC Sidebar (inside page-layout for side-by-side layout) -->
+    <!-- Desktop TOC Sidebar -->
     <nav class="toc-sidebar" id="toc-sidebar">
       <h4>Contents</h4>
       <div id="toc-content"></div>
@@ -879,7 +944,7 @@
   <script>
     (function () {
       // ===== Theme =====
-      const STORAGE_KEY = 'ai-playbook-en-theme';
+      const STORAGE_KEY = 'ai-playbook-articles-en-theme';
       const themeToggle = document.getElementById('theme-toggle');
       const root = document.documentElement;
 
@@ -900,7 +965,7 @@
       applyTheme(currentTheme);
 
       themeToggle.addEventListener('click', () => {
-        if (!currentTheme || currentTheme === 'system') {
+        if (!currentTheme) {
           const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           currentTheme = systemDark ? 'light' : 'dark';
         } else {
@@ -938,7 +1003,7 @@
           const code = btn.getAttribute('data-code');
           try {
             await navigator.clipboard.writeText(code);
-            btn.textContent = 'Copied';
+            btn.textContent = '✓ Copied';
             btn.classList.add('copied');
             setTimeout(() => {
               btn.textContent = 'Copy';
@@ -949,7 +1014,7 @@
             ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
             document.body.appendChild(ta); ta.select();
             document.execCommand('copy'); document.body.removeChild(ta);
-            btn.textContent = 'Copied';
+            btn.textContent = '✓ Copied';
             btn.classList.add('copied');
             setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
           }
@@ -958,15 +1023,19 @@
 
       // ===== TOC =====
       const tocItems = [];
-      document.querySelectorAll('.section-card h2, .section-card h3').forEach((el, i) => {
+
+      document.querySelectorAll('.section h2, .section h3').forEach((el, i) => {
         if (!el.id) {
-          const text = el.textContent.replace(/^\d\s*/, '').trim().replace(/\s+/g, '-').toLowerCase();
-          el.id = 'heading-' + i + (text ? '-' + text.substring(0, 20) : '');
+          const clone = el.cloneNode(true);
+          const dot = clone.querySelector('.dot');
+          if (dot) dot.remove();
+          const text = clone.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+          el.id = 'heading-' + i + '-' + text.substring(0, 30);
         }
         const tag = el.tagName.toLowerCase();
         const clone = el.cloneNode(true);
-        const stepNum = clone.querySelector('.step-num');
-        if (stepNum) stepNum.remove();
+        const dot = clone.querySelector('.dot');
+        if (dot) dot.remove();
         const title = clone.textContent.trim();
         tocItems.push({ id: el.id, title: title, tag: tag });
       });
@@ -992,13 +1061,14 @@
         });
       }
 
-      if (tocItems.length < 3) {
-        document.getElementById('toc-sidebar').style.display = 'none';
-      } else {
+      if (tocItems.length >= 3) {
         buildTocLinks(tocContent);
         buildTocLinks(tocDrawerContent);
+      } else {
+        document.getElementById('toc-sidebar').style.display = 'none';
       }
 
+      // Intersection Observer
       const tocLinks = () => document.querySelectorAll('[data-toc-id]');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1038,6 +1108,7 @@
       tocDrawerCloseBtn.addEventListener('click', closeTocDrawer);
       tocOverlay.addEventListener('click', closeTocDrawer);
 
+      // ===== Responsive images =====
       document.querySelectorAll('img').forEach(img => {
         img.style.maxWidth = '100%';
         img.style.height = 'auto';

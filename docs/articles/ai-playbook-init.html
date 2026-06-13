@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e1a">
+  <title>AI Playbook 仓库初始化 — AI Playbook</title>
+  <style>
+    :root { --bg: #0a0e1a; --card-bg: #131827; --text: #dce1e8; --text-secondary: #8892a8; --accent: #63b3ed; --accent-glow: rgba(99,179,237,0.15); --accent-soft: #1a2940; --code-bg: #090d15; --code-text: #bcc5d4; --code-accent: #68d391; --border: #1e2a3a; --shadow: 0 2px 12px rgba(0,0,0,0.4); --table-stripe: #151b28; --table-hover: #1a2333; --blockquote-bg: #111827; --blockquote-border: #63b3ed; --toc-bg: #131827; --toc-active: #63b3ed; --divider: #1e2a3a; --nav-bg: rgba(10,14,26,0.85); }
+    [data-theme="light"] { --bg: #f4f6f9; --card-bg: #ffffff; --text: #1a1f2e; --text-secondary: #5a6377; --accent: #2563eb; --accent-glow: rgba(37,99,235,0.08); --accent-soft: #dbeafe; --code-bg: #1a1f2e; --code-text: #e2e8f0; --code-accent: #34d399; --border: #dce1e8; --shadow: 0 2px 8px rgba(0,0,0,0.06); --table-stripe: #f8fafc; --table-hover: #f0f4f8; --blockquote-bg: #eff6ff; --blockquote-border: #2563eb; --toc-bg: #ffffff; --toc-active: #2563eb; --divider: #dce1e8; --nav-bg: rgba(244,246,249,0.85); }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg: #f4f6f9; --card-bg: #ffffff; --text: #1a1f2e; --text-secondary: #5a6377; --accent: #2563eb; --accent-glow: rgba(37,99,235,0.08); --accent-soft: #dbeafe; --code-bg: #1a1f2e; --code-text: #e2e8f0; --code-accent: #34d399; --border: #dce1e8; --shadow: 0 2px 8px rgba(0,0,0,0.06); --table-stripe: #f8fafc; --table-hover: #f0f4f8; --blockquote-bg: #eff6ff; --blockquote-border: #2563eb; --toc-bg: #ffffff; --toc-active: #2563eb; --divider: #dce1e8; --nav-bg: rgba(244,246,249,0.85); } }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:28px}
+    body{font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+    .progress-bar{position:fixed;top:0;left:0;height:3px;z-index:1000;background:linear-gradient(90deg,var(--accent),var(--code-accent));transition:width .1s linear}
+    .top-nav{position:sticky;top:3px;z-index:900;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .top-nav-inner{max-width:760px;margin:0 auto;padding:8px 24px;display:flex;align-items:center;gap:12px}
+    @media(max-width:640px){.top-nav-inner{padding:8px 18px}}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-divider{color:var(--border);font-size:.8rem;margin:0 4px}
+    .nav-current{font-size:.78rem;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .container{max-width:760px;margin:0 auto;padding:32px 24px 80px}
+    @media(max-width:640px){.container{padding:24px 18px 100px}}
+    .hero{text-align:center;padding:44px 24px 28px;margin-bottom:32px;position:relative}
+    .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+    .hero h1{font-size:2rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.5px;line-height:1.3}
+    .hero .tagline{font-size:.95rem;color:var(--text-secondary);font-style:italic;font-family:"SF Mono","Fira Code","JetBrains Mono",Consolas,monospace}
+    @media(max-width:640px){.hero{padding:32px 12px 24px}.hero h1{font-size:1.5rem}}
+    .section{background:var(--card-bg);border-radius:12px;padding:28px 32px;margin-bottom:20px;border:1px solid var(--border);box-shadow:var(--shadow);scroll-margin-top:60px}
+    @media(max-width:640px){.section{padding:22px 18px}}
+    .section h2{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;scroll-margin-top:80px}
+    .section h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);flex-shrink:0}
+    .section h3{font-size:1.05rem;font-weight:600;color:var(--text);margin:22px 0 10px;scroll-margin-top:80px;padding-left:14px;border-left:3px solid var(--accent)}
+    .section p{margin-bottom:12px;color:var(--text-secondary);line-height:1.85}
+    .section a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+    .section a:hover{border-bottom-color:var(--accent)}
+    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0;border-radius:10px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:.88rem}
+    th{background:var(--accent-soft);color:var(--accent);font-weight:600;padding:12px 16px;text-align:left;white-space:nowrap;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+    tr:nth-child(even) td{background:var(--table-stripe)}tr:hover td{background:var(--table-hover)}
+    blockquote{background:var(--blockquote-bg);border-left:3px solid var(--blockquote-border);padding:16px 20px;margin:16px 0;border-radius:0 8px 8px 0;color:var(--text-secondary)}
+    ul,ol{margin:12px 0 12px 20px;list-style:none}
+    li{margin-bottom:8px;color:var(--text-secondary);padding-left:22px;position:relative}
+    ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+    :not(pre)>code{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:4px;font-family:"SF Mono","Fira Code","JetBrains Mono",Consolas,monospace;font-size:.85em;font-weight:500}
+    strong{color:var(--text);font-weight:700}
+    hr{border:none;border-top:1px solid var(--divider);margin:24px 0}
+    @media(min-width:1100px){.page-layout{max-width:1032px;margin:0 auto;padding:0 24px;display:flex;gap:32px;align-items:flex-start}.page-layout .container{flex:1;min-width:0;max-width:760px;margin:0;padding-left:0;padding-right:0}}
+    @media(min-width:1100px){.toc-sidebar{display:block;position:sticky;top:60px;width:216px;flex-shrink:0;max-height:calc(100vh - 100px);overflow-y:auto;background:var(--toc-bg);border:1px solid var(--border);border-radius:12px;padding:20px 16px;box-shadow:var(--shadow);z-index:100;scrollbar-width:thin;scrollbar-color:var(--border) transparent}.toc-sidebar h4{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:14px;font-weight:600;font-family:"SF Mono","Fira Code",Consolas,monospace}.toc-sidebar a{display:block;font-size:.8rem;color:var(--text-secondary);text-decoration:none;padding:6px 10px;border-radius:6px;border-left:2px solid transparent;transition:all .15s;margin-bottom:2px}.toc-sidebar a:hover{color:var(--accent);background:var(--accent-glow)}.toc-sidebar a.toc-h3{padding-left:22px;font-size:.76rem}.toc-sidebar a.active{color:var(--toc-active);border-left-color:var(--toc-active);background:var(--accent-soft);font-weight:600}}
+    @media(max-width:1099px){.toc-sidebar{display:none}}
+    .toc-drawer-btn{display:none}@media(max-width:1099px){.toc-drawer-btn{display:flex}}
+    .float-controls{position:fixed;right:20px;bottom:60px;z-index:500;display:flex;flex-direction:column;gap:8px}
+    .float-btn{width:44px;height:44px;border-radius:50%;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow);transition:all .2s;-webkit-tap-highlight-color:transparent}
+    .float-btn:hover{background:var(--accent-soft);color:var(--accent)}.float-btn:active{transform:scale(.95)}.float-btn.hidden{opacity:0;pointer-events:none}
+    .toc-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:900}.toc-drawer-overlay.open{display:block}
+    .toc-drawer{position:fixed;bottom:0;left:0;right:0;max-height:65vh;background:var(--card-bg);border-radius:20px 20px 0 0;z-index:901;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:16px 0 env(safe-area-inset-bottom,20px);box-shadow:0 -4px 24px rgba(0,0,0,.25);border:1px solid var(--border)}.toc-drawer.open{transform:translateY(0)}
+    .toc-drawer-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 12px}
+    .toc-drawer-header{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;border-bottom:1px solid var(--border)}.toc-drawer-header h4{font-size:.85rem;font-weight:600;color:var(--text)}
+    .toc-drawer-close{background:none;border:none;font-size:1.4rem;color:var(--text-secondary);cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+    .toc-drawer-content{padding:8px 0;max-height:calc(65vh - 70px);overflow-y:auto}.toc-drawer-content a{display:block;font-size:.92rem;color:var(--text-secondary);text-decoration:none;padding:12px 24px;border-left:3px solid transparent;transition:all .15s}.toc-drawer-content a.toc-h3{padding-left:40px;font-size:.85rem}.toc-drawer-content a.active{color:var(--toc-active);border-left-color:var(--toc-active);background:var(--accent-soft);font-weight:600}
+    img{max-width:100%;height:auto}
+    @media(hover:none){.float-btn:hover{background:var(--card-bg);color:var(--text)}tr:hover td{background:transparent}tr:nth-child(even):hover td{background:var(--table-stripe)}}
+  </style>
+</head>
+<body>
+<div class="progress-bar" id="progress-bar"></div>
+<nav class="top-nav"><div class="top-nav-inner"><a class="nav-back" href="list.html"><span style="font-size:0.9rem">←</span> 文章列表</a><span class="nav-divider">/</span><span class="nav-current">仓库初始化</span></div></nav>
+<div class="toc-drawer-overlay" id="toc-overlay"></div>
+<div class="toc-drawer" id="toc-drawer"><div class="toc-drawer-handle"></div><div class="toc-drawer-header"><h4>目录</h4><button class="toc-drawer-close" id="toc-drawer-close" aria-label="关闭目录">×</button></div><div class="toc-drawer-content" id="toc-drawer-content"></div></div>
+<div class="float-controls"><button class="float-btn theme-toggle" id="theme-toggle" aria-label="切换主题" title="切换主题">🌓</button><button class="float-btn toc-drawer-btn" id="toc-drawer-btn" aria-label="目录" title="目录">☰</button><button class="float-btn hidden" id="back-to-top" aria-label="回到顶部" title="回到顶部">↑</button></div>
+<div class="page-layout"><div class="container">
+
+<section class="hero" id="hero">
+  <h1>AI Playbook 仓库初始化：<br>从空目录到完整技能体系</h1>
+  <p class="tagline">&gt; 一次对话，从零搭建起一个记录 AI 使用方法的 Playbook 仓库，包含 4 个可复用技能、双语文档体系和 GitHub Pages 发布能力。</p>
+</section>
+
+<section class="section" id="sec-bg">
+  <h2><span class="dot"></span>背景</h2>
+  <p>在 GitHub 上克隆了一个空仓库 <code>ai-playbook</code>，打算用来沉淀日常使用 AI 的全部可复用资产——技能、工具、脚本、规则、角色、提示词、命令，以及围绕 AI 使用写下的思考和文章。目标是让这个仓库既是自己的 AI 操作手册，也能通过 GitHub Pages 对外分享。</p>
+</section>
+
+<section class="section" id="sec-process">
+  <h2><span class="dot"></span>过程</h2>
+  <h3>仓库骨架搭建</h3>
+  <p>在空仓库中创建了八个功能目录：<code>commands/</code>、<code>docs/</code>、<code>prompts/</code>、<code>roles/</code>、<code>rules/</code>、<code>scripts/</code>、<code>skills/</code>、<code>tools/</code>，以及后来的 <code>articles/</code>。每个目录都用 <code>INDEX.md</code> 作为索引文件，保持结构可维护。</p>
+  <p>随后撰写了中英文两份 README，对整个仓库的定位、目录结构、使用方式做了清晰说明。</p>
+
+  <h3>MD to HTML 技能</h3>
+  <p>创建了第一个技能：将 Markdown 文件转化为有格调的单文件 HTML 页面。核心设计是零外部依赖——样式和脚本全部内联，本地浏览器直接可访问。工作流分四步：分析文档内容 → 推理匹配风格 → 确认明暗主题 → 生成 HTML。</p>
+  <p>用这个技能将两份 README 分别转成了 <code>docs/index.html</code> 和 <code>docs/index_en.html</code>，风格选了「清单卡片」+「跟随系统」主题。生成过程中修复了两个布局问题：sidebar 与内容区重叠（改用 flex 并排布局）、浮动按钮重叠（移除独立 fixed 定位）。</p>
+
+  <h3>Skills Audit 技能</h3>
+  <p>第二个技能用于审计 SKILL.md 文件质量。按六个维度（触发器、步骤 I/O、分支路径、退出条件、边界情况、输出格式）逐条评分，输出通过/警告/缺失报告，并给出可操作的修复建议。额外支持三个角色专属检查维度（冲突升级路径、角色漂移防护、目标措辞平衡性）。</p>
+
+  <h3>Git Commit 技能</h3>
+  <p>第三个技能用于一键完成 Git 提交流程，省去手动敲命令。六步流程：环境校验（检测 Git 仓库、分支状态、远程配置）→ 变更展示（文件和统计摘要）→ 获取提交信息 → 执行 add/commit → 执行 push（含各种失败处理）→ 结果输出。特别强调了安全边界：禁止自动 force push，pull --rebase 冲突不自动解决。</p>
+
+  <h3>Session Summary 技能</h3>
+  <p>第四个技能将当前对话上下文总结为一篇结构化文章，保存到 <code>articles/</code> 目录。面向读者而非归档，用话题板块而非流水账组织内容，控制在 500-1500 字。</p>
+
+  <h3>双语体系与细节完善</h3>
+  <p>在两份 README 和 HTML 中加入了语言切换链接（中文 ↔ English），GitHub 上浏览 README 和 Pages 上浏览 HTML 都能一键切换。过程中修正了目录名大小写问题（<code>articles/</code> 而非 <code>Articles/</code>）。</p>
+  <p>所有四个技能都安装到了 Pi（<code>~/.pi/agent/skills/</code>），在 Pi 对话中可通过触发词直接使用。</p>
+</section>
+
+<section class="section" id="sec-decisions">
+  <h2><span class="dot"></span>关键决策</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>决策</th><th>原因</th></tr></thead>
+    <tbody>
+      <tr><td>HTML 页面零外部依赖（无 CDN）</td><td>确保离线可用，不被第三方服务可用性影响</td></tr>
+      <tr><td>Skills 索引用 INDEX.md 而非目录自描述</td><td>统一索引格式，方便检索和维护</td></tr>
+      <tr><td>README 使用卡片的 HTML 风格（风格 C）</td><td>清单卡片适合索引型文档，八个目录清晰可辨</td></tr>
+      <tr><td>文件命名语义化优先，时间戳兜底</td><td>语义化命名可读性强，时间戳保证不冲突</td></tr>
+      <tr><td>所有技能安装到 Pi</td><td>在 Pi 对话中直接触发，无需手动复制提示词</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="section" id="sec-output">
+  <h2><span class="dot"></span>产出清单</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>文件/操作</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>README.md</code></td><td>中文版仓库说明（含语言切换链接）</td></tr>
+      <tr><td><code>README_EN.md</code></td><td>英文版仓库说明（含语言切换链接）</td></tr>
+      <tr><td><code>docs/index.html</code></td><td>中文版 GitHub Pages 页面</td></tr>
+      <tr><td><code>docs/index_en.html</code></td><td>英文版 GitHub Pages 页面</td></tr>
+      <tr><td><code>skills/md-to-html/SKILL.md</code></td><td>MD to HTML 技能定义</td></tr>
+      <tr><td><code>skills/skills-audit/SKILL.md</code></td><td>Skills Audit 技能定义</td></tr>
+      <tr><td><code>skills/git-commit/SKILL.md</code></td><td>Git Commit 技能定义</td></tr>
+      <tr><td><code>skills/session-summary/SKILL.md</code></td><td>Session Summary 技能定义</td></tr>
+      <tr><td><code>skills/INDEX.md</code></td><td>Skills 目录索引</td></tr>
+      <tr><td><code>articles/INDEX.md</code></td><td>Articles 目录索引</td></tr>
+      <tr><td>各目录 <code>INDEX.md</code></td><td>占位索引文件（commands/prompts/roles/rules/scripts/tools）</td></tr>
+      <tr><td>四个技能安装到 <code>~/.pi/agent/skills/</code></td><td>Pi 集成</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="section" id="sec-thoughts">
+  <h2><span class="dot"></span>思考与备注</h2>
+  <p>整个搭建过程基本是一条直线：先定骨架，再填充内容，最后打磨细节。值得记住的是 MD to HTML 技能的定位——它不是简单的「Markdown 套个壳」，而是对同一内容表达力的升级。风格服务于内容，这在后续生成 HTML 时是一个反复被验证的原则。</p>
+  <p>另外，先有技能（Skills）再安装到 Pi 的设计模式很好：技能文件本身是平台无关的规范，存放在仓库里可版本管理、可被审计；安装到 Pi 只是复制，不改变技能定义。这样即使换一个 AI 工具，技能依然可以复用。</p>
+</section>
+
+</div>
+<nav class="toc-sidebar" id="toc-sidebar"><h4>目录</h4><div id="toc-content"></div></nav>
+</div>
+<script>
+(function(){var K='ap-art-init-th';var tg=document.getElementById('theme-toggle');var r=document.documentElement;function g(){try{return localStorage.getItem(K)}catch(e){return null}}function s(t){try{localStorage.setItem(K,t)}catch(e){}}function a(t){r.removeAttribute('data-theme');if(t==='dark')r.setAttribute('data-theme','dark');else if(t==='light')r.setAttribute('data-theme','light')}var ct=g();a(ct);tg.addEventListener('click',function(){ct=ct?(ct==='dark'?'light':'dark'):(window.matchMedia('(prefers-color-scheme:dark)').matches?'light':'dark');a(ct);s(ct)});var bar=document.getElementById('progress-bar');window.addEventListener('scroll',function(){var st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(dh>0?Math.min((st/dh)*100,100):0)+'%'},{passive:true});var btt=document.getElementById('back-to-top');window.addEventListener('scroll',function(){btt.classList.toggle('hidden',window.scrollY<=400)},{passive:true});btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});var items=[];document.querySelectorAll('.section h2,.section h3').forEach(function(el,i){if(!el.id){var c=el.cloneNode(true);var d=c.querySelector('.dot');if(d)d.remove();el.id='h-'+i+'-'+c.textContent.trim().replace(/\s+/g,'-').toLowerCase().substring(0,30)}var c=el.cloneNode(true);var d=c.querySelector('.dot');if(d)d.remove();var tag=el.tagName.toLowerCase();items.push({id:el.id,title:c.textContent.trim(),tag:tag})});var tc=document.getElementById('toc-content'),tdc=document.getElementById('toc-drawer-content');function bld(c){c.innerHTML='';items.forEach(function(it){var a=document.createElement('a');a.href='#'+it.id;a.textContent=it.title;if(it.tag==='h3')a.classList.add('toc-h3');a.setAttribute('data-toc-id',it.id);a.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById(it.id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});closeD()});c.appendChild(a)})}if(items.length>=3){bld(tc);bld(tdc)}else{document.getElementById('toc-sidebar').style.display='none'}var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var id=e.target.id;document.querySelectorAll('[data-toc-id]').forEach(function(l){l.classList.toggle('active',l.getAttribute('data-toc-id')===id)})}})},{rootMargin:'-80px 0px -70% 0px'});items.forEach(function(it){var el=document.getElementById(it.id);if(el)obs.observe(el)});var drawer=document.getElementById('toc-drawer'),overlay=document.getElementById('toc-overlay'),dbtn=document.getElementById('toc-drawer-btn'),dclose=document.getElementById('toc-drawer-close');function closeD(){overlay.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow=''}dbtn.addEventListener('click',function(){overlay.classList.add('open');drawer.classList.add('open');document.body.style.overflow='hidden'});dclose.addEventListener('click',closeD);overlay.addEventListener('click',closeD)})();
+</script>
+</body>
+</html>

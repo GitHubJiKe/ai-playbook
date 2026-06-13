@@ -15,3 +15,9 @@
 ---
 
 > 待后续补充。文章可手动撰写或通过 AI 辅助记录。新增文章时请在本文件中添加对应条目。
+
+## 最新文章
+
+| 序号 | 标题 | 文件 | 状态 | 简介 |
+|------|------|------|------|------|
+| 4 | AI Playbook 全站 Markdown HTML 化：批量转化与导航链接体系搭建 | [`ai-playbook-md-to-html-batch.md`](ai-playbook-md-to-html-batch.md) | ✅ 已完成 | 将仓库中 6 个 Markdown 文件全部转为极简科技感 HTML，构建完整导航链接体系，并修复了 macOS 大小写冲突问题 |

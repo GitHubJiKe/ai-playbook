@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e1a">
+  <title>AI Playbook — 我的 AI 使用手册</title>
+  <style>
+    :root { --bg: #0a0e1a; --card-bg: #131827; --text: #dce1e8; --text-secondary: #8892a8; --accent: #63b3ed; --accent-glow: rgba(99,179,237,0.15); --accent-soft: #1a2940; --code-bg: #090d15; --code-text: #bcc5d4; --code-accent: #68d391; --border: #1e2a3a; --shadow: 0 2px 12px rgba(0,0,0,0.4); --table-stripe: #151b28; --table-hover: #1a2333; --blockquote-bg: #111827; --blockquote-border: #63b3ed; --toc-bg: #131827; --toc-active: #63b3ed; --divider: #1e2a3a; --nav-bg: rgba(10,14,26,0.85); }
+    [data-theme="light"] { --bg: #f4f6f9; --card-bg: #ffffff; --text: #1a1f2e; --text-secondary: #5a6377; --accent: #2563eb; --accent-glow: rgba(37,99,235,0.08); --accent-soft: #dbeafe; --code-bg: #1a1f2e; --code-text: #e2e8f0; --code-accent: #34d399; --border: #dce1e8; --shadow: 0 2px 8px rgba(0,0,0,0.06); --table-stripe: #f8fafc; --table-hover: #f0f4f8; --blockquote-bg: #eff6ff; --blockquote-border: #2563eb; --toc-bg: #ffffff; --toc-active: #2563eb; --divider: #dce1e8; --nav-bg: rgba(244,246,249,0.85); }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg: #f4f6f9; --card-bg: #ffffff; --text: #1a1f2e; --text-secondary: #5a6377; --accent: #2563eb; --accent-glow: rgba(37,99,235,0.08); --accent-soft: #dbeafe; --code-bg: #1a1f2e; --code-text: #e2e8f0; --code-accent: #34d399; --border: #dce1e8; --shadow: 0 2px 8px rgba(0,0,0,0.06); --table-stripe: #f8fafc; --table-hover: #f0f4f8; --blockquote-bg: #eff6ff; --blockquote-border: #2563eb; --toc-bg: #ffffff; --toc-active: #2563eb; --divider: #dce1e8; --nav-bg: rgba(244,246,249,0.85); } }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:28px}
+    body{font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+    .progress-bar{position:fixed;top:0;left:0;height:3px;z-index:1000;background:linear-gradient(90deg,var(--accent),var(--code-accent));transition:width .1s linear}
+    .top-nav{position:sticky;top:3px;z-index:900;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .top-nav-inner{max-width:760px;margin:0 auto;padding:8px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    @media(max-width:640px){.top-nav-inner{padding:8px 18px}}
+    .nav-home{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-home:hover{color:var(--accent)}
+    .nav-lang{font-size:.78rem;color:var(--text-secondary);text-decoration:none;padding:4px 12px;border:1px solid var(--border);border-radius:6px;transition:all .2s;font-weight:500;white-space:nowrap}
+    .nav-lang:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-glow)}
+    .container{max-width:760px;margin:0 auto;padding:32px 24px 80px}
+    @media(max-width:640px){.container{padding:24px 18px 100px;font-size:16px;line-height:1.75}}
+    .hero{text-align:center;padding:48px 24px 32px;margin-bottom:32px;position:relative}
+    .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+    .hero h1{font-size:2.2rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.5px}
+    .hero h1 .accent{color:var(--accent)}
+    .hero .tagline{font-size:1rem;color:var(--text-secondary);font-style:italic;font-family:"SF Mono","Fira Code","JetBrains Mono",Consolas,monospace}
+    @media(max-width:640px){.hero{padding:32px 12px 24px}.hero h1{font-size:1.6rem}}
+    .section{background:var(--card-bg);border-radius:12px;padding:28px 32px;margin-bottom:20px;border:1px solid var(--border);box-shadow:var(--shadow);scroll-margin-top:60px}
+    @media(max-width:640px){.section{padding:22px 18px}}
+    .section h2{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;scroll-margin-top:80px}
+    .section h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);flex-shrink:0}
+    .section p{margin-bottom:12px;color:var(--text-secondary);line-height:1.8}
+    .section a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+    .section a:hover{border-bottom-color:var(--accent)}
+    .code-card{background:var(--code-bg);border-radius:10px;margin:16px 0;position:relative;overflow:hidden;border:1px solid var(--border)}
+    .code-card .code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
+    .code-card .code-lang{font-size:.7rem;color:var(--code-accent);font-weight:600;text-transform:uppercase;letter-spacing:.5px;font-family:"SF Mono","Fira Code","JetBrains Mono",Consolas,monospace}
+    .code-card .copy-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--code-text);padding:4px 12px;border-radius:6px;font-size:.72rem;cursor:pointer;font-family:inherit;transition:all .2s;min-width:44px;min-height:30px}
+    .code-card .copy-btn:hover{background:rgba(255,255,255,.12)}.code-card .copy-btn.copied{color:var(--code-accent);border-color:var(--code-accent);background:rgba(104,211,145,.1)}
+    .code-card pre{margin:0;padding:18px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .code-card code{font-family:"SF Mono","Fira Code","JetBrains Mono","Cascadia Code",Consolas,monospace;font-size:.82rem;color:var(--code-text);line-height:1.7}
+    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0;border-radius:10px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:.88rem}
+    th{background:var(--accent-soft);color:var(--accent);font-weight:600;padding:12px 16px;text-align:left;white-space:nowrap;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+    tr:nth-child(even) td{background:var(--table-stripe)}tr:hover td{background:var(--table-hover)}
+    ul,ol{margin:12px 0 12px 20px;list-style:none}
+    li{margin-bottom:8px;color:var(--text-secondary);padding-left:22px;position:relative}
+    ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+    ol{counter-reset:item}ol li{padding-left:32px}
+    ol li::before{counter-increment:item;content:counter(item);position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:4px;background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1;font-family:"SF Mono","Fira Code",Consolas,monospace}
+    blockquote{background:var(--blockquote-bg);border-left:3px solid var(--blockquote-border);padding:16px 20px;margin:16px 0;border-radius:0 8px 8px 0;color:var(--text-secondary)}
+    blockquote a{color:var(--accent);text-decoration:none;word-break:break-all}
+    :not(pre)>code{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:4px;font-family:"SF Mono","Fira Code","JetBrains Mono",Consolas,monospace;font-size:.85em;font-weight:500}
+    strong{color:var(--text);font-weight:700}
+    .article-link-section{background:var(--card-bg);border-radius:12px;padding:24px 32px;margin-bottom:20px;border:1px solid var(--accent);border-color:var(--accent);box-shadow:var(--shadow)}
+    .article-link-section h2{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .article-link-section h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);flex-shrink:0}
+    .article-link-section p{color:var(--text-secondary);margin-bottom:12px}
+    .article-link-section .btn-link{display:inline-block;color:var(--accent);text-decoration:none;font-weight:600;padding:8px 20px;border:1px solid var(--accent);border-radius:8px;transition:all .2s}
+    .article-link-section .btn-link:hover{background:var(--accent-glow)}
+    @media(min-width:1100px){.page-layout{max-width:1032px;margin:0 auto;padding:0 24px;display:flex;gap:32px;align-items:flex-start}.page-layout .container{flex:1;min-width:0;max-width:760px;margin:0;padding-left:0;padding-right:0}}
+    @media(min-width:1100px){.toc-sidebar{display:block;position:sticky;top:60px;width:216px;flex-shrink:0;max-height:calc(100vh - 100px);overflow-y:auto;background:var(--toc-bg);border:1px solid var(--border);border-radius:12px;padding:20px 16px;box-shadow:var(--shadow);z-index:100;scrollbar-width:thin;scrollbar-color:var(--border) transparent}.toc-sidebar h4{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:14px;font-weight:600;font-family:"SF Mono","Fira Code",Consolas,monospace}.toc-sidebar a{display:block;font-size:.8rem;color:var(--text-secondary);text-decoration:none;padding:6px 10px;border-radius:6px;border-left:2px solid transparent;transition:all .15s;margin-bottom:2px}.toc-sidebar a:hover{color:var(--accent);background:var(--accent-glow)}.toc-sidebar a.active{color:var(--toc-active);border-left-color:var(--toc-active);background:var(--accent-soft);font-weight:600}}
+    @media(max-width:1099px){.toc-sidebar{display:none}}
+    .toc-drawer-btn{display:none}@media(max-width:1099px){.toc-drawer-btn{display:flex}}
+    .float-controls{position:fixed;right:20px;bottom:60px;z-index:500;display:flex;flex-direction:column;gap:8px}
+    .float-btn{width:44px;height:44px;border-radius:50%;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow);transition:all .2s;-webkit-tap-highlight-color:transparent}
+    .float-btn:hover{background:var(--accent-soft);color:var(--accent)}.float-btn:active{transform:scale(.95)}.float-btn.hidden{opacity:0;pointer-events:none}
+    .toc-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:900}.toc-drawer-overlay.open{display:block}
+    .toc-drawer{position:fixed;bottom:0;left:0;right:0;max-height:65vh;background:var(--card-bg);border-radius:20px 20px 0 0;z-index:901;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:16px 0 env(safe-area-inset-bottom,20px);box-shadow:0 -4px 24px rgba(0,0,0,.25);border:1px solid var(--border)}.toc-drawer.open{transform:translateY(0)}
+    .toc-drawer-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 12px}
+    .toc-drawer-header{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;border-bottom:1px solid var(--border)}.toc-drawer-header h4{font-size:.85rem;font-weight:600;color:var(--text)}
+    .toc-drawer-close{background:none;border:none;font-size:1.4rem;color:var(--text-secondary);cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+    .toc-drawer-content{padding:8px 0;max-height:calc(65vh - 70px);overflow-y:auto}.toc-drawer-content a{display:block;font-size:.92rem;color:var(--text-secondary);text-decoration:none;padding:12px 24px;border-left:3px solid transparent;transition:all .15s}.toc-drawer-content a.active{color:var(--toc-active);border-left-color:var(--toc-active);background:var(--accent-soft);font-weight:600}
+    img{max-width:100%;height:auto}
+    @media(hover:none){.float-btn:hover{background:var(--card-bg);color:var(--text)}tr:hover td{background:transparent}tr:nth-child(even):hover td{background:var(--table-stripe)}}
+  </style>
+</head>
+<body>
+<div class="progress-bar" id="progress-bar"></div>
+<nav class="top-nav"><div class="top-nav-inner"><a class="nav-home" href="../index.html"><span style="font-size:0.9rem">←</span> AI Playbook 首页</a><a class="nav-lang" href="index_en.html">English</a></div></nav>
+<div class="toc-drawer-overlay" id="toc-overlay"></div>
+<div class="toc-drawer" id="toc-drawer"><div class="toc-drawer-handle"></div><div class="toc-drawer-header"><h4>目录</h4><button class="toc-drawer-close" id="toc-drawer-close" aria-label="关闭目录">×</button></div><div class="toc-drawer-content" id="toc-drawer-content"></div></div>
+<div class="float-controls"><button class="float-btn theme-toggle" id="theme-toggle" aria-label="切换主题" title="切换主题">🌓</button><button class="float-btn toc-drawer-btn" id="toc-drawer-btn" aria-label="目录" title="目录">☰</button><button class="float-btn hidden" id="back-to-top" aria-label="回到顶部" title="回到顶部">↑</button></div>
+<div class="page-layout"><div class="container">
+
+<section class="hero" id="hero">
+  <h1><span class="accent">AI Playbook</span> · 我的 AI 使用手册</h1>
+  <p class="tagline">&gt; 一个记录和沉淀我日常使用 AI 的 Playbook 仓库。</p>
+</section>
+
+<section class="section" id="section-about">
+  <h2><span class="dot"></span>关于本仓库</h2>
+  <p>这里是我与 AI 协作的全部可复用资产——技能、工具、脚本、规则、角色、提示词、命令，以及围绕 AI 使用写下的思考和文章（存放在 <code>articles/</code> 目录）。</p>
+  <p>所有内容按功能分类存放，方便检索、复用和持续迭代。部分文章会转化为 HTML 并通过 <strong>GitHub Pages</strong> 对外发布。</p>
+</section>
+
+<section class="section" id="section-structure">
+  <h2><span class="dot"></span>目录结构</h2>
+  <div class="code-card"><div class="code-header"><span class="code-lang">tree</span><button class="copy-btn" data-code="ai-playbook/
+├── articles/         # 关于 AI 使用的感想、思考、感悟
+├── commands/         # 常用 AI 命令（快捷指令集合）
+├── docs/             # 文章 &amp; GitHub Pages 发布内容
+├── prompts/          # 提示词模板（可复用的 prompt）
+├── roles/            # AI 角色设定（人设和系统 prompt）
+├── rules/            # 规则文件（约束和规范 AI 行为）
+├── scripts/          # 脚本（自动化、批处理等）
+├── skills/           # 技能（特定场景下的完整工作流）
+├── tools/            # 工具（AI 辅助工具链）
+└── README.md         # 本文件">复制</button></div>
+  <pre><code>ai-playbook/
+├── articles/         # 关于 AI 使用的感想、思考、感悟
+├── commands/         # 常用 AI 命令（快捷指令集合）
+├── docs/             # 文章 &amp; GitHub Pages 发布内容
+├── prompts/          # 提示词模板（可复用的 prompt）
+├── roles/            # AI 角色设定（人设和系统 prompt）
+├── rules/            # 规则文件（约束和规范 AI 行为）
+├── scripts/          # 脚本（自动化、批处理等）
+├── skills/           # 技能（特定场景下的完整工作流）
+├── tools/            # 工具（AI 辅助工具链）
+└── README.md         # 本文件</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>目录</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>articles/</code></td><td>关于 AI 使用和本仓库的感想、思考、感悟，可手动撰写或 AI 辅助记录</td></tr>
+      <tr><td><code>commands/</code></td><td>沉淀常用的 AI 指令，如"帮我润色这段文字"、"生成单元测试"等，即拿即用</td></tr>
+      <tr><td><code>docs/</code></td><td>AI 使用心得、技术文章，以及转换为 HTML 的网页内容，通过 GitHub Pages 发布</td></tr>
+      <tr><td><code>prompts/</code></td><td>经过验证的高质量提示词模板，可直接复用或二次定制</td></tr>
+      <tr><td><code>roles/</code></td><td>AI 角色定义，为不同场景预设系统级人设和对话规则</td></tr>
+      <tr><td><code>rules/</code></td><td>AI 行为约束规则，确保输出质量、风格、范围符合预期</td></tr>
+      <tr><td><code>scripts/</code></td><td>自动化脚本，将 AI 集成到日常工作流中</td></tr>
+      <tr><td><code>skills/</code></td><td>面向特定任务的完整技能包，包含 prompt + 规则 + 工作流</td></tr>
+      <tr><td><code>tools/</code></td><td>与 AI 搭配使用的工具清单、配置和使用指南</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="section" id="section-usage">
+  <h2><span class="dot"></span>使用方式</h2>
+  <ol>
+    <li><strong>浏览</strong>：按目录分类找到需要的技能、提示词或规则</li>
+    <li><strong>复用</strong>：直接复制 prompt 或规则到你的 AI 对话中</li>
+    <li><strong>参考</strong>：阅读 <code>docs/</code> 中的文章了解使用思路</li>
+    <li><strong>共建</strong>：欢迎提 Issue 或 PR 分享你的 AI 使用技巧</li>
+  </ol>
+</section>
+
+<section class="section" id="section-pages">
+  <h2><span class="dot"></span>GitHub Pages</h2>
+  <p>本仓库的 <code>docs/</code> 目录已配置 GitHub Pages，你可以直接访问：</p>
+  <blockquote><a href="https://GitHubJiKe.github.io/ai-playbook" target="_blank" rel="noopener">https://GitHubJiKe.github.io/ai-playbook</a></blockquote>
+</section>
+
+<div class="article-link-section">
+  <h2><span class="dot"></span>📄 更多文章</h2>
+  <p>阅读关于 AI Playbook 创建过程的详细文章：仓库初始化、资产创建流水线、Pi 双向同步等。</p>
+  <a class="btn-link" href="list.html">📖 浏览全部文章 →</a>
+</div>
+
+<section class="section" id="section-license">
+  <h2><span class="dot"></span>许可</h2>
+  <p>MIT License © 2026</p>
+</section>
+
+</div>
+<nav class="toc-sidebar" id="toc-sidebar"><h4>目录</h4><div id="toc-content"></div></nav>
+</div>
+<script>
+(function(){var K='ap-art-thm';var tg=document.getElementById('theme-toggle');var r=document.documentElement;function g(){try{return localStorage.getItem(K)}catch(e){return null}}function s(t){try{localStorage.setItem(K,t)}catch(e){}}function a(t){r.removeAttribute('data-theme');if(t==='dark')r.setAttribute('data-theme','dark');else if(t==='light')r.setAttribute('data-theme','light')}var ct=g();a(ct);tg.addEventListener('click',function(){ct=ct?(ct==='dark'?'light':'dark'):(window.matchMedia('(prefers-color-scheme:dark)').matches?'light':'dark');a(ct);s(ct)});var bar=document.getElementById('progress-bar');window.addEventListener('scroll',function(){var st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(dh>0?Math.min((st/dh)*100,100):0)+'%'},{passive:true});var btt=document.getElementById('back-to-top');window.addEventListener('scroll',function(){btt.classList.toggle('hidden',window.scrollY<=400)},{passive:true});btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});document.querySelectorAll('.copy-btn').forEach(function(btn){btn.addEventListener('click',async function(){var code=btn.getAttribute('data-code');try{await navigator.clipboard.writeText(code);btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied')},2000)}catch(e){var ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied')},2000)}})});var items=[];document.querySelectorAll('.section h2').forEach(function(el,i){if(!el.id){var c=el.cloneNode(true);var d=c.querySelector('.dot');if(d)d.remove();el.id='h-'+i+'-'+c.textContent.trim().replace(/\s+/g,'-').toLowerCase().substring(0,30)}var c=el.cloneNode(true);var d=c.querySelector('.dot');if(d)d.remove();items.push({id:el.id,title:c.textContent.trim(),tag:'h2'})});var tc=document.getElementById('toc-content'),tdc=document.getElementById('toc-drawer-content');function bld(c){c.innerHTML='';items.forEach(function(it){var a=document.createElement('a');a.href='#'+it.id;a.textContent=it.title;a.setAttribute('data-toc-id',it.id);a.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById(it.id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});closeD()});c.appendChild(a)})}if(items.length>=3){bld(tc);bld(tdc)}else{document.getElementById('toc-sidebar').style.display='none'}var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var id=e.target.id;document.querySelectorAll('[data-toc-id]').forEach(function(l){l.classList.toggle('active',l.getAttribute('data-toc-id')===id)})}})},{rootMargin:'-80px 0px -70% 0px'});items.forEach(function(it){var el=document.getElementById(it.id);if(el)obs.observe(el)});var drawer=document.getElementById('toc-drawer'),overlay=document.getElementById('toc-overlay'),dbtn=document.getElementById('toc-drawer-btn'),dclose=document.getElementById('toc-drawer-close');function closeD(){overlay.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow=''}dbtn.addEventListener('click',function(){overlay.classList.add('open');drawer.classList.add('open');document.body.style.overflow='hidden'});dclose.addEventListener('click',closeD);overlay.addEventListener('click',closeD)})();
+</script>
+</body>
+</html>
