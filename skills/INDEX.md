@@ -12,6 +12,8 @@
 | 2 | **Skills Audit** | [`skills-audit/SKILL.md`](skills-audit/SKILL.md) | ✅ 可用 | 对 SKILL.md 文件进行结构化质量审计，按 D1-D6 六个维度（触发器、步骤 I/O、分支路径、退出条件、边界情况、输出格式）逐条评分，输出通过/警告/缺失报告和可操作的修复建议。 | ✅ 已安装 |
 | 3 | **Git Commit** | [`git-commit/SKILL.md`](git-commit/SKILL.md) | ✅ 可用 | 一键 Git 提交流程：自动检测仓库状态 → 展示变更摘要 → 获取确认提交信息 → 执行 add/commit/push → 输出结果。覆盖无仓库、无远程、Detached HEAD、push 被拒、大文件、pre-commit hook 失败等边界情况。 | ✅ 已安装 |
 | 4 | **Session Summary** | [`session-summary/SKILL.md`](session-summary/SKILL.md) | ✅ 可用 | 将当前对话上下文总结为一篇结构化文章，保存到 articles/ 目录。四步流程：扫描对话 → 确定标题 → 按模板撰写（背景/过程/决策/产出） → 写入文件并更新索引。面向读者，高度概括，不是流水账。 | ✅ 已安装 |
+| 5 | **Idea Classifier** | [`idea-classifier/SKILL.md`](idea-classifier/SKILL.md) | ✅ 可用 | 帮用户判断一个想法/需求应该沉淀为哪种 AI Playbook 资产类型（命令/提示词/角色/规则/脚本/技能/工具/文章），并按对应格式生成内容写入仓库。五步流程：收集想法 → 分类分析 → 展示结果 → 生成资产 → 写入仓库。 | ✅ 已安装 |
+| 6 | **Skill Creator** | [`skill-creator/SKILL.md`](skill-creator/SKILL.md) | ✅ 可用 | 按八种资产类型模板创建高质量 AI Playbook 资产。内置七条硬性质量规则（R1-R7），在生成阶段自动执行六维度检查，杜绝循环缺退出条件、触发词不足等常见缺陷。四步流程：明确目标 → 设计结构 → 生成+质检 → 写入。 | ✅ 已安装 |
 
 ---
 
@@ -40,3 +42,5 @@
 | 2026-06-13 | 新增技能：Skills Audit（SKILL.md 质量审计工具） |
 | 2026-06-13 | 新增技能：Git Commit（一键 Git 提交，add → commit → push） |
 | 2026-06-13 | 新增技能：Session Summary（对话总结为文章，保存到 articles/） |
+| 2026-06-13 | 新增技能：Idea Classifier（想法分类与沉淀，判断资产类型并按格式写入仓库） |
+| 2026-06-13 | 新增技能：Skill Creator（资产创建器，内置七条质量规则，覆盖八种类型模板） |
