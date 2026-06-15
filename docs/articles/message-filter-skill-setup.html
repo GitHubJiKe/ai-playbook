@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>为 AI Playbook 搭建私信留言价值过滤器</title>
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface-hover: #1a2332;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #63b3ed;
+            --accent-glow: rgba(99, 179, 237, 0.15);
+            --border: #1e293b;
+            --border-light: #283348;
+            --code-bg: #1e293b;
+            --table-header: #1e293b;
+            --table-alt: #0f172a;
+            --blockquote-border: #63b3ed;
+            --blockquote-bg: rgba(99, 179, 237, 0.05);
+            --hr-color: #1e293b;
+            --progress-bg: #1e293b;
+            --progress-fill: linear-gradient(90deg, #63b3ed, #818cf8);
+            --overlay: rgba(0, 0, 0, 0.5);
+            --btn-bg: #1e293b;
+            --btn-hover: #283348;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --scrollbar-thumb: #334155;
+            --scrollbar-track: #0f172a;
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.08);
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --code-bg: #f1f5f9;
+            --table-header: #f1f5f9;
+            --table-alt: #f8fafc;
+            --blockquote-border: #2563eb;
+            --blockquote-bg: rgba(37, 99, 235, 0.04);
+            --hr-color: #e2e8f0;
+            --progress-bg: #e2e8f0;
+            --progress-fill: linear-gradient(90deg, #2563eb, #6366f1);
+            --overlay: rgba(0, 0, 0, 0.3);
+            --btn-bg: #ffffff;
+            --btn-hover: #f1f5f9;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --scrollbar-thumb: #cbd5e1;
+            --scrollbar-track: #f1f5f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        body {
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--progress-fill);
+            z-index: 1000;
+            transition: width 0.1s linear;
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* Navigation */
+        #toc-sidebar {
+            position: fixed;
+            right: max(24px, calc((100vw - 1100px) / 2 - 220px));
+            top: 120px;
+            width: 200px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            z-index: 100;
+            padding: 6px 0;
+            scrollbar-width: thin;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 1099px) {
+            #toc-sidebar { display: none; }
+        }
+
+        #toc-sidebar .toc-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 12px;
+            font-weight: 600;
+        }
+
+        #toc-sidebar a {
+            display: block;
+            padding: 5px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: all 0.2s ease;
+            line-height: 1.5;
+            border-radius: 0 6px 6px 0;
+        }
+
+        #toc-sidebar a.toc-h3 { padding-left: 24px; font-size: 12px; }
+
+        #toc-sidebar a:hover { color: var(--accent); background: var(--accent-glow); }
+
+        #toc-sidebar a.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: var(--accent-glow);
+            font-weight: 500;
+        }
+
+        /* Floating Controls */
+        #floating-controls {
+            position: fixed;
+            bottom: max(24px, env(safe-area-inset-bottom, 24px));
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        @media (max-width: 1099px) {
+            #floating-controls { right: 16px; bottom: max(20px, env(safe-area-inset-bottom, 20px)); }
+        }
+
+        .float-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--btn-bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .float-btn:hover {
+            background: var(--btn-hover);
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        @media (hover: none) {
+            .float-btn:hover { transform: none; }
+        }
+
+        #back-to-top {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Mobile TOC Drawer */
+        #toc-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #toc-overlay.open { opacity: 1; pointer-events: auto; }
+
+        #toc-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 65vh;
+            background: var(--surface);
+            border-radius: 20px 20px 0 0;
+            z-index: 1101;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.2);
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+        }
+
+        #toc-drawer.open { transform: translateY(0); }
+
+        .drawer-handle {
+            width: 36px;
+            height: 5px;
+            background: var(--border-light);
+            border-radius: 3px;
+            margin: 12px auto 8px;
+            flex-shrink: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 24px 16px;
+            flex-shrink: 0;
+        }
+
+        .drawer-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .drawer-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--code-bg);
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-list {
+            overflow-y: auto;
+            padding: 0 24px 20px;
+            flex: 1;
+        }
+
+        .drawer-list a {
+            display: block;
+            padding: 10px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-light);
+            transition: color 0.2s;
+        }
+
+        .drawer-list a.toc-h3 { padding-left: 16px; font-size: 13px; }
+
+        .drawer-list a:last-child { border-bottom: none; }
+
+        .drawer-list a:active { color: var(--accent); }
+
+        /* Content */
+        .content-wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 60px 24px 120px;
+        }
+
+        @media (max-width: 640px) {
+            .content-wrapper { padding: 40px 18px 100px; }
+        }
+
+        h1 {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .article-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .article-meta .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: var(--accent-glow);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--blockquote-border);
+            padding: 16px 20px;
+            margin: 24px 0;
+            background: var(--blockquote-bg);
+            border-radius: 0 8px 8px 0;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+        }
+
+        blockquote strong {
+            color: var(--text);
+        }
+
+        h2 {
+            font-size: clamp(20px, 3vw, 26px);
+            font-weight: 700;
+            margin: 48px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text);
+            letter-spacing: -0.01em;
+            scroll-margin-top: 24px;
+        }
+
+        h3 {
+            font-size: clamp(17px, 2.5vw, 20px);
+            font-weight: 600;
+            margin: 32px 0 14px;
+            color: var(--text);
+            scroll-margin-top: 24px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        @media (max-width: 640px) {
+            p { font-size: 16px; line-height: 1.8; }
+        }
+
+        strong { font-weight: 600; color: var(--text); }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        a:hover { opacity: 0.8; }
+
+        code {
+            font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+            background: var(--code-bg);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.88em;
+            color: var(--accent);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 640px) {
+            .table-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        thead th {
+            background: var(--table-header);
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        tbody tr:nth-child(even) td { background: var(--table-alt); }
+
+        tbody tr:hover td { background: var(--surface-hover); }
+
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        ul li, ol li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 11px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.6;
+        }
+
+        ol { counter-reset: item; }
+
+        ol li {
+            counter-increment: item;
+            padding-left: 32px;
+        }
+
+        ol li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+            margin: 40px 0;
+        }
+
+        /* Terminal accent */
+        .terminal-marker {
+            color: var(--accent);
+            font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 13px;
+            opacity: 0.7;
+            user-select: none;
+        }
+
+        h3 .terminal-marker { margin-right: 6px; }
+
+        /* Footer */
+        .article-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* Responsive TOC visibility */
+        @media (min-width: 1100px) {
+            .toc-mobile-btn { display: none; }
+        }
+
+        @media (max-width: 1099px) {
+            .toc-mobile-btn { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+
+    <!-- Desktop TOC Sidebar -->
+    <nav id="toc-sidebar" aria-label="目录">
+        <div class="toc-title">目录</div>
+    </nav>
+
+    <!-- Floating Controls -->
+    <div id="floating-controls">
+        <button class="float-btn toc-mobile-btn" id="toc-toggle" aria-label="目录" title="目录">☰</button>
+        <button class="float-btn" id="theme-toggle" aria-label="切换主题" title="切换主题">
+            <span class="theme-icon-dark">☀️</span>
+            <span class="theme-icon-light" style="display:none">🌙</span>
+        </button>
+        <button class="float-btn" id="back-to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+    </div>
+
+    <!-- Mobile TOC Overlay -->
+    <div id="toc-overlay"></div>
+
+    <!-- Mobile TOC Drawer -->
+    <div id="toc-drawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header">
+            <h3>目录</h3>
+            <button class="drawer-close" id="drawer-close" aria-label="关闭">×</button>
+        </div>
+        <div class="drawer-list" id="drawer-list"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="content-wrapper">
+        <h1>为 AI Playbook 搭建私信留言价值过滤器</h1>
+        <div class="article-meta">
+            <span>2026-06-14</span>
+            <span class="tag">技能搭建</span>
+            <span class="tag">质量审计</span>
+        </div>
+
+        <blockquote>
+            从一次粉丝互动出发，将「内容创作者如何平衡创作时间与私信回复」的讨论，沉淀为一个可复用的 AI 技能——<strong>六维评估体系自动判断留言是否值得投入时间</strong>，附带追问机制和三层过滤链。
+        </blockquote>
+
+        <h2 id="背景">背景</h2>
+
+        <p>一位微信公众号粉丝加了作者的微信，问了一个元问题：<strong>你是如何平衡创作时间投入和私信留言回复的？</strong> 这个问题本身就很妙——它在问一个内容创作者如何管理注意力资源。</p>
+
+        <p>讨论中碰撞出几条策略：告诉 AI 什么类型的留言有意义（多维度过滤）、设置付费咨询门槛、只留邮箱作为深度交流入口（愿意郑重其事写邮件的人已经完成了第一次自我筛选）。归根结底，需要一个 <strong>workflow</strong> 来追问留言者的真实诉求，判断是否值得继续对话。</p>
+
+        <p>这就是本次对话的起点——把这个思路结构化，变成 AI Playbook 里一个可复用的资产。</p>
+
+        <h2 id="过程">过程</h2>
+
+        <h3 id="过程-想法分类">想法分类：该沉淀成什么？</h3>
+
+        <p>用 <code>idea-classifier</code> 技能判断这个想法的归属。八个候选类型中，最接近的是「技能」和「提示词」：提示词方案适合单轮评估（把留言贴进去，AI 打分，出结论），但用户明确提到了「需要一个 workflow」——多步骤、有分支判断、追问后分流。这超出了提示词的能力边界，落在了「技能」的定义区间。</p>
+
+        <p>最终确定为 <strong>技能</strong>，路径 <code>skills/message-filter/</code>。</p>
+
+        <h3 id="过程-技能生成">技能生成：六维评估 + 三层过滤链</h3>
+
+        <p>技能的骨架是五步工作流：</p>
+
+        <ol>
+            <li><strong>接收留言</strong>：原文照搬，记录渠道和留言者身份</li>
+            <li><strong>六维评估</strong>：清晰度、深度、领域相关性、留言者投入度、独特性、行动价值——各 1-5 分，加权计算后定级</li>
+            <li><strong>追问（高分）</strong>：探明对方真实目的、检验诚意、锚定时间边界</li>
+            <li><strong>简短回复（中分）</strong>：礼貌应答但关闭深入对话的通道</li>
+            <li><strong>丢弃（低分）</strong>：建议不回复，给出一句话原因</li>
+        </ol>
+
+        <p>在这个核心流程之外，还设计了<strong>三层组合过滤链</strong>：渠道过滤（邮箱入口）→ AI 评估层（本技能）→ 付费门槛，创作者可以按所处阶段选择性启用——初期只用 AI 层保持互动感，中期开邮箱策略，后期三层全开来变现。</p>
+
+        <h3 id="过程-质量审计">质量审计：自己写的 Skill 也有盲区</h3>
+
+        <p>用 <code>skills-audit</code> 审计后发现，六个维度整体不错（D1 触发器、D5 边界覆盖、D6 输出格式都通过），但有两个警告：</p>
+
+        <ul>
+            <li><strong>D2（步骤 I/O 清晰度）</strong>：Step 1 说「若用户只给了摘要，提醒用户提供原文」——但提醒之后是等还是走？没说。</li>
+            <li><strong>D3（分支路径完整性）</strong>：评估完直接跳到输出，中间没有用户确认节点。AI 可能在深度或领域相关性上误判，用户却没有原地纠正的入口。</li>
+        </ul>
+
+        <p>综合评级「达标」（3/5，无必须修复项），这两个警告不致命但会影响实际使用体验。</p>
+
+        <h3 id="过程-修复完善">修复完善：补上缺失的路径</h3>
+
+        <p>两处修复：</p>
+
+        <ol>
+            <li><strong>Step 1 非原文路径</strong>：明确为「先等待补充 → 用户坚持则继续但投入度降档处理」，不留空白。</li>
+            <li><strong>Step 2.3 确认节点（新增）</strong>：评估完成后先向用户展示摘要（评分 + 亮点/短板 + 分流方向），提供三条路径：确认执行 / 调整评分（最多 2 轮循环）/ 跳过确认。同时支持用户在 Step 1 声明「跳过确认」来永久省略此节点。</li>
+        </ol>
+
+        <p>修复后复审计：6/6 通过，🏆 优秀。</p>
+
+        <h2 id="关键决策">关键决策</h2>
+
+        <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>决策</th>
+                    <th>原因</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>分类选「技能」而非「提示词」</td>
+                    <td>需要分步 + 分支 + 追问后分流，提示词只能承载单轮评估，装不下完整 workflow</td>
+                </tr>
+                <tr>
+                    <td>六维评分用加权而非等权</td>
+                    <td>深度（25%）和领域相关性（20%）比清晰度（15%）更能区分「值得深聊」和「FAQ 可答」的留言</td>
+                </tr>
+                <tr>
+                    <td>设计三层过滤链但渐进启用</td>
+                    <td>不把付费门槛写进默认流程——粉丝量少的创作者需要互动感，一刀切反而有害</td>
+                </tr>
+                <tr>
+                    <td>审计后新增 Step 2.3 确认节点</td>
+                    <td>禁止清单写了「AI 不能代替用户决策」，但原流程里没有给用户决策的入口，这个矛盾只能靠确认节点解决</td>
+                </tr>
+                <tr>
+                    <td>调整循环设 2 轮硬上限</td>
+                    <td>避免用户在评分上反复纠结，破坏过滤器的「省时间」初衷</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="产出清单">产出清单</h2>
+
+        <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>文件/操作</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>skills/message-filter/SKILL.md</code></td>
+                    <td>新建技能文件，五步工作流 + 六维评估 + 三层过滤链，v1.1（含审计修复）</td>
+                </tr>
+                <tr>
+                    <td><code>skills/INDEX.md</code></td>
+                    <td>更新索引，新增第 7 条技能条目</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="思考与备注">思考与备注</h2>
+
+        <ul>
+            <li><strong>审计的价值</strong>：写技能时很容易带入「理想执行路径」的假设——用户一定给原文、AI 一定评对分、用户一定同意。但现实中用户可能只扔个摘要过来，AI 可能误判领域相关性，用户可能想推翻 AI 的判断。审计把这些隐性的「万一」逼出来，转化成显性的分支路径。</li>
+            <li><strong>轻量确认的平衡</strong>：Step 2.3 的确认节点不能太重——如果每次都让用户看六维明细再确认，过滤器就从省时间变成费时间。所以摘要只展示最强和最弱的维度各一个，同时提供了「永久跳过」的后门。</li>
+        </ul>
+
+        <footer class="article-footer">
+            由 AI Playbook 生成 · 2026-06-14 · 极简科技风
+        </footer>
+    </main>
+
+    <script>
+        (function() {
+            // Theme
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const iconDark = themeToggle.querySelector('.theme-icon-dark');
+            const iconLight = themeToggle.querySelector('.theme-icon-light');
+
+            function getPreferredTheme() {
+                const saved = localStorage.getItem('md-html-theme');
+                if (saved === 'dark' || saved === 'light') return saved;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            function applyTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                const isDark = theme === 'dark';
+                iconDark.style.display = isDark ? '' : 'none';
+                iconLight.style.display = isDark ? 'none' : '';
+                document.querySelector('meta[name="theme-color"]').content =
+                    isDark ? '#0a0e1a' : '#f8fafc';
+            }
+
+            const currentTheme = getPreferredTheme();
+            applyTheme(currentTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                localStorage.setItem('md-html-theme', next);
+            });
+
+            // Progress bar
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                progressBar.style.width = pct + '%';
+            }, { passive: true });
+
+            // Back to top
+            const backToTop = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.scrollY > 400);
+            }, { passive: true });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Build TOC
+            const headings = Array.from(document.querySelectorAll('.content-wrapper h2, .content-wrapper h3'));
+            if (headings.length >= 3) {
+                const sidebar = document.getElementById('toc-sidebar');
+                const drawerList = document.getElementById('drawer-list');
+
+                headings.forEach(h => {
+                    if (!h.id) {
+                        h.id = h.textContent.trim()
+                            .replace(/\s+/g, '-')
+                            .replace(/[^a-zA-Z0-9\u4e00-\u9fff\-]/g, '')
+                            .toLowerCase();
+                    }
+
+                    const isH3 = h.tagName === 'H3';
+                    const link = document.createElement('a');
+                    link.href = '#' + h.id;
+                    link.textContent = h.textContent.trim();
+                    link.className = isH3 ? 'toc-h3' : 'toc-h2';
+
+                    const clone = link.cloneNode(true);
+                    sidebar.appendChild(link);
+                    drawerList.appendChild(clone);
+                });
+
+                // Intersection Observer for active TOC
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            sidebar.querySelectorAll('a').forEach(a => {
+                                a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+                            });
+                        }
+                    });
+                }, { rootMargin: '-80px 0px -60% 0px' });
+
+                headings.forEach(h => observer.observe(h));
+            } else {
+                document.getElementById('toc-sidebar').style.display = 'none';
+                document.getElementById('toc-toggle').style.display = 'none';
+            }
+
+            // Mobile TOC drawer
+            const tocToggle = document.getElementById('toc-toggle');
+            const tocOverlay = document.getElementById('toc-overlay');
+            const tocDrawer = document.getElementById('toc-drawer');
+            const drawerClose = document.getElementById('drawer-close');
+
+            function openDrawer() {
+                tocOverlay.classList.add('open');
+                tocDrawer.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                tocToggle.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeDrawer() {
+                tocOverlay.classList.remove('open');
+                tocDrawer.classList.remove('open');
+                document.body.style.overflow = '';
+                tocToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            tocToggle.addEventListener('click', openDrawer);
+            tocOverlay.addEventListener('click', closeDrawer);
+            drawerClose.addEventListener('click', closeDrawer);
+
+            document.getElementById('drawer-list').addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const id = e.target.getAttribute('href').slice(1);
+                    const el = document.getElementById(id);
+                    if (el) {
+                        closeDrawer();
+                        setTimeout(() => {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 350);
+                    }
+                }
+            });
+
+            // Desktop sidebar clicks
+            document.getElementById('toc-sidebar').addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const id = e.target.getAttribute('href').slice(1);
+                    const el = document.getElementById(id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('md-html-theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
