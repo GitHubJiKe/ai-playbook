@@ -15,6 +15,7 @@
 | 5 | **Idea Classifier** | [`idea-classifier/SKILL.md`](idea-classifier/SKILL.md) | ✅ 可用 | 帮用户判断一个想法/需求应该沉淀为哪种 AI Playbook 资产类型（命令/提示词/角色/规则/脚本/技能/工具/文章），并按对应格式生成内容写入仓库。五步流程：收集想法 → 分类分析 → 展示结果 → 生成资产 → 写入仓库。 | ✅ 已安装 |
 | 6 | **Skill Creator** | [`skill-creator/SKILL.md`](skill-creator/SKILL.md) | ✅ 可用 | 按八种资产类型模板创建高质量 AI Playbook 资产。内置七条硬性质量规则（R1-R7），在生成阶段自动执行六维度检查，杜绝循环缺退出条件、触发词不足等常见缺陷。四步流程：明确目标 → 设计结构 → 生成+质检 → 写入。 | ✅ 已安装 |
 | 7 | **Message Filter** | [`message-filter/SKILL.md`](message-filter/SKILL.md) | ✅ 可用 | 帮内容创作者过滤粉丝私信/留言，六维价值评估 + 追问机制 + 分流策略，判断留言是否值得投入时间深入交流。五步工作流：接收留言 → 六维打分 → 追问/简短回复/丢弃。附带三层组合过滤链（渠道/评估/付费门槛）。 | ✅ 已安装 |
+| 8 | **Cognitive Drilling** | [`cognitive-drilling/SKILL.md`](cognitive-drilling/SKILL.md) | ✅ 可用 | 认知钻井机——将任何一句话、一个现象、一个问题向下挖掘六层：连续追问 → 规律提取 → 反向思维 → 多学科拆解 → 研究级问题 → 机会发现，输出完整结构化分析报告和 TOP 20 核心问题树。 | ✅ 已安装 |
 
 ---
 
@@ -46,3 +47,4 @@
 | 2026-06-13 | 新增技能：Idea Classifier（想法分类与沉淀，判断资产类型并按格式写入仓库） |
 | 2026-06-13 | 新增技能：Skill Creator（资产创建器，内置七条质量规则，覆盖八种类型模板） |
 | 2026-06-14 | 新增技能：Message Filter（私信留言价值过滤器，六维评估 + 追问分流，三层过滤链） |
+| 2026-06-15 | 新增技能：Cognitive Drilling（认知钻井机，六层深度挖掘框架，结构化分析报告） |
